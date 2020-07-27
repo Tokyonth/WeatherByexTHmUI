@@ -1,0 +1,126 @@
+<resources>
+    <string name="app_name">天气</string>
+    <string name="celsius">℃</string>
+    <string name="degree">°</string>
+    <string name="percent_sign">%</string>
+    <string name="unknown_error">发生未知错误</string>
+    <string name="must_allow_permission">必须同意所有权限才能使用本应用程序！</string>
+    <string name="add_city_success">添加成功</string>
+    <string name="load_last_time_msg">已为你加载上一次天气信息</string>
+    <string name="city_search_hint">搜索关键字</string>
+    <string name="data_by_jisu">数据来源于极速数据</string>
+    <string name="settings_item_title">标题</string>
+    <string name="settings_item_msg">内容</string>
+    <string name="widget_weather_contaminated">轻度\n污染</string>
+    <string name="widget_weather_wind">轻度\n污染</string>
+    <string name="widget_weather_prediction">轻度\n污染</string>
+    <string name="city_already_exist">该城市已经存在</string>
+    <string name="city_del_city">已删除</string>
+    <string name="refresh_success">刷新成功!</string>
+    <string name="no_network_connection">你似乎没有连接到网络，请连接网络后重试</string>
+    <string name="no_city_code">该城市/省份没有天气代码，不能添加</string>
+    <string name="import_success">导入成功</string>
+    <string name="import_failed">导入失败!请稍后重试</string>
+    <string name="permission_explain_title">权限说明</string>
+    <string name="permission_explain_msg">定位权限用于获取所在地点的城市信息，
+        存储权限用于高德定位写入离线定位数据。</string>
+    <string name="simple_weather_tips">%s° / %s %s</string>
+
+    <string name="default_test_city_name">成都</string>
+    <string name="default_test_index_title">运动指数</string>
+    <string name="default_test_index_sub">较适宜</string>
+    <string name="default_test_index_msg">天气较好，无雨水困扰，较适宜进行各种运动，
+        但因气温较低，在户外运动请注意增减衣物</string>
+    <string name="default_test_warn_title">高温预警</string>
+    <string name="default_test_time">12:00</string>
+    <string name="default_test_weather">多云</string>
+    <string name="default_aqi_quality_level">空气质量一级</string>
+    <string name="default_aqi_primary_pollute">首要污染物:PM10</string>
+    <string name="default_aqi_affect">空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响</string>
+    <string name="default_hourly_weather_tips">24小时\n无雨雪天气</string>
+    <string name="default_day_weather_tips">未来7天\n无雨雪天气</string>
+
+    <string name="menu_popup_delete">删除</string>
+    <string name="menu_city_management">城市选择</string>
+    <string name="menu_warning">预警</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_shard">分享</string>
+
+    <string name="act_text_blur">高斯模糊</string>
+    <string name="act_text_set_blur_raids">设置模糊半径:</string>
+    <string name="act_text_set_blur_image">设置背景图片:</string>
+    <string name="act_text_import_city_data">正在导入城市数据…</string>
+    <string name="act_text_positioning">定位中…</string>
+    <string name="act_btn_select_image">选择图像</string>
+    <string name="act_title_about">关于</string>
+    <string name="act_title_warning">气象预警</string>
+    <string name="act_title_select_city">选择城市</string>
+
+    <string name="text_null">无</string>
+    <string name="text_tips">提示</string>
+    <string name="text_exit">退出</string>
+    <string name="text_definite">确定</string>
+    <string name="text_cancel">取消</string>
+    <string name="text_not_info">无信息</string>
+    <string name="text_today">今天</string>
+    <string name="text_day">白天</string>
+    <string name="text_night">夜晚</string>
+    <string name="text_day_date">日白天</string>
+    <string name="text_night_date">日夜晚</string>
+    <string name="text_dynamic_background_error">动态背景加载出现错误</string>
+    <string name="text_manual_selection">手动选择</string>
+    <string name="text_failed_to_locate">未能成功定位,请手动选择城市</string>
+    <string name="text_warning_data_source">数据来源于中国气象局</string>
+    <string name="text_default_city_not_exist">默认城市不存在！</string>
+    <string name="text_cannot_del_default_city">默认城市不能删除</string>
+    <string name="text_no_notification_permission">无通知权限，请手动打开通知栏的权限</string>
+    <string name="text_widget_data_error">小部件获取数据失败</string>
+    <string name="text_weather_update_time">天气更新时间 : %s</string>
+
+    <string name="index_air_conditioning">空调指数</string>
+    <string name="index_sport">运动指数</string>
+    <string name="index_uv">紫外线指数</string>
+    <string name="index_virus">感冒指数</string>
+    <string name="index_washing">洗车指数</string>
+    <string name="index_air_pollution">空气污染扩散指数</string>
+    <string name="index_clothes">穿衣指数</string>
+
+    <string name="air_quality_good">优</string>
+    <string name="air_quality_medium">良</string>
+    <string name="air_quality_lightly_pollute">轻度污染</string>
+    <string name="air_quality_medium_pollute">中度污染</string>
+    <string name="air_quality_heavy_pollute">重度污染</string>
+    <string name="air_quality_deep_pollute">严重污染</string>
+
+    <string name="weather_sun">晴</string>
+    <string name="weather_overcast">阴</string>
+    <string name="weather_snow">雪</string>
+    <string name="weather_rain">雨</string>
+    <string name="weather_cloudy">多云</string>
+    <string name="weather_thunder">雷</string>
+    <string name="weather_light_rain">小雨</string>
+    <string name="weather_shower">阵雨</string>
+
+    <string name="contributor_1"><u>@零下一度</u></string>
+    <string name="contributor_2"><u>https://github.com/Mixiaoxiao/Weather</u></string>
+    <string name="contributor_3"><u>https://github.com/YugengWang/Windmill</u></string>
+
+    <string name="pf_on">开</string>
+    <string name="pf_off">关</string>
+    <string name="pf_notification">天气通知</string>
+    <string name="pf_notification_title">通知栏天气</string>
+    <string name="pf_notification_style_title">状态栏图标</string>
+    <string name="pf_notification_style_summary">设置在状态栏显示的样式</string>
+    <string name="pf_lock_screen_weather">在锁屏显示</string>
+    <string name="pf_personalise">个性化</string>
+    <string name="pf_use_picture">使用图片背景</string>
+    <string name="pf_choice_picture">选择一张图片</string>
+    <string name="pf_use_blur">使用高斯模糊卡片背景</string>
+    <string name="pf_set_blur_config">设置模糊半径</string>
+    <string name="pf_blur">高斯模糊</string>
+    <string name="pf_data_source">数据源</string>
+    <string name="pf_other">其他</string>
+    <string name="pf_about">关于</string>
+    <string name="pf_open_source_code">开源相关</string>
+    <string name="pf_choice_data_source">选择数据源</string>
+</resources>

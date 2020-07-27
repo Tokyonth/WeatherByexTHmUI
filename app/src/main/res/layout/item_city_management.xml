@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/city_management_cv"
+    android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="8dp">
+
+    <LinearLayout
+        android:id="@+id/city_management_back_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="16dp"
+        android:background="@android:color/black">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/city_management_city_name_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="@color/colorWhite"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:maxLines="1"
+                tools:text="@string/default_test_city_name"/>
+
+            <com.tokyonth.weather.view.EnglishTextView
+                android:textColor="@color/colorWhite"
+                android:id="@+id/city_management_weather_temp_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                tools:text="26"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:gravity="center">
+
+            <com.tokyonth.weather.view.BurnRoundView
+                android:visibility="gone"
+                android:id="@+id/burn_icon"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                app:burnColor="@color/colorAccent"
+                app:burnSrc="@drawable/ic_clear"
+                app:isBurn="true"/>
+
+            <ImageView
+                android:id="@+id/city_management_weather_image_iv"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:tint="@android:color/white"
+                tools:src="@drawable/weather_sunny"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

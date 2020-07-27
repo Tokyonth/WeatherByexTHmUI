@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimaryDark">#F5F5F5</color>
+    <color name="colorAccent">#448AFF</color>
+    <color name="textBlack">#737373</color>
+    <color name="textGrey">#9DA0A3</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="sunViewShadowColor">#2CEBEBEB</color>
+    <color name="colorBackground">#F5F5F5</color>
+    <color name="sunny">#80d8ff</color>
+    <color name="cloudy">#757575</color>
+    <color name="rain">#607D8B</color>
+    <color name="snow">#84FFFF</color>
+    <color name="fog">#B2DFDB</color>
+    <color name="haze">#795548</color>
+    <color name="sand">#FF9800</color>
+    <color name="divider">#E6E6E6</color>
+    <color name="transparent">#0000</color>
+    <color name="airQualityGood">#4CAF50</color>
+    <color name="airQualityMedium">#FFC107</color>
+    <color name="airQualityLightlyPollute">#FF5722</color>
+    <color name="airQualityMediumPollute">#F44336</color>
+    <color name="airQualityHeavyPollute">#9C27B0</color>
+    <color name="airQualityDeepPollute">#880E4F</color>
+</resources>

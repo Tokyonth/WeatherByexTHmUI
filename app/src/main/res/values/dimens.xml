@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="weather_view_pager_margin">12dp</dimen>
+    <dimen name="text_view_padding">12dp</dimen>
+    <dimen name="default_weather_image_view_size">20dp</dimen>
+    <dimen name="default_weather_image_bottom_size">20dp</dimen>
+    <dimen name="widget_large_temp_text_size">20sp</dimen>
+    <dimen name="widget_large_time_text_size">14sp</dimen>
+    <dimen name="widget_large_image_padding">10dp</dimen>
+</resources>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/pf_notification">
+
+        <SwitchPreferenceCompat
+            app:key="pf_notifications_weather"
+            app:title="@string/pf_notification_title"
+            app:summaryOn="@string/pf_on"
+            app:summaryOff="@string/pf_off"
+            app:icon="@drawable/ic_announcement_24px"/>
+
+        <SwitchPreferenceCompat
+            app:key="pf_lock_screen_weather"
+            app:title="@string/pf_lock_screen_weather"
+            app:summaryOn="@string/pf_on"
+            app:summaryOff="@string/pf_off"
+            app:icon="@drawable/ic_lock_24px"/>
+
+        <Preference
+            app:key="pf_notifications_weather_style"
+            app:title="@string/pf_notification_style_title"
+            app:summary="@string/pf_notification_style_summary"
+            app:icon="@drawable/ic_filter_vintage_24px"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pf_personalise">
+
+        <SwitchPreferenceCompat
+            app:key="pf_use_picture"
+            app:title="@string/pf_use_picture"
+            app:summaryOn="@string/pf_on"
+            app:summaryOff="@string/pf_off"
+            app:icon="@drawable/ic_broken_image_24px"/>
+
+        <Preference
+            app:key="pf_choice_picture"
+            app:title="@string/pf_choice_picture"
+            app:icon="@drawable/ic_all_inbox_24px"/>
+
+        <SwitchPreferenceCompat
+            app:key="pf_use_blur"
+            app:title="@string/pf_use_blur"
+            app:summaryOn="@string/pf_on"
+            app:summaryOff="@string/pf_off"
+            app:icon="@drawable/ic_texture_24px"/>
+
+        <SeekBarPreference
+            app:key="pf_set_blur_radius"
+            app:title="@string/pf_blur"
+            app:summary="@string/pf_set_blur_config"
+            app:showSeekBarValue="true"
+            app:icon="@drawable/ic_blur_circular_24px"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pf_data_source">
+
+        <Preference
+            app:key="pf_data_form"
+            app:title="@string/pf_choice_data_source"
+            app:icon="@drawable/ic_cloud_24px"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/pf_other">
+
+        <Preference
+            app:key="pf_open_source_code"
+            app:title="@string/pf_open_source_code"
+            app:icon="@drawable/ic_code_24px"/>
+
+        <Preference
+            app:key="pf_about"
+            app:title="@string/pf_about"
+            app:summary="Version 1.0"
+            app:icon="@drawable/ic_info_24px"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
