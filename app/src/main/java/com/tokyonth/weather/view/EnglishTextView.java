@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 
+import androidx.appcompat.widget.AppCompatTextView;
+
 import com.tokyonth.weather.helper.FontHelper;
 
-public class EnglishTextView extends androidx.appcompat.widget.AppCompatTextView {
+public class EnglishTextView extends AppCompatTextView {
 
     public static final String ANDROID_SCHEMA = "http://schemas.android.com/apk/res/android";
 

@@ -11,6 +11,9 @@
     <string name="data_by_jisu">数据来源于极速数据</string>
     <string name="settings_item_title">标题</string>
     <string name="settings_item_msg">内容</string>
+    <string name="author">Author TOKYONTH</string>
+    <string name="version">Version </string>
+    <string name="thanks">鸣谢</string>
     <string name="widget_weather_contaminated">轻度\n污染</string>
     <string name="widget_weather_wind">轻度\n污染</string>
     <string name="widget_weather_prediction">轻度\n污染</string>
@@ -24,8 +27,7 @@
     <string name="permission_explain_title">权限说明</string>
     <string name="permission_explain_msg">定位权限用于获取所在地点的城市信息，
         存储权限用于高德定位写入离线定位数据。</string>
-    <string name="simple_weather_tips">%s° / %s %s</string>
-
+    <string name="simple_weather_tips">%s° / %s° %s</string>
     <string name="default_test_city_name">成都</string>
     <string name="default_test_index_title">运动指数</string>
     <string name="default_test_index_sub">较适宜</string>
@@ -39,13 +41,11 @@
     <string name="default_aqi_affect">空气质量可接受，但某些污染物可能对极少数异常敏感人群健康有较弱影响</string>
     <string name="default_hourly_weather_tips">24小时\n无雨雪天气</string>
     <string name="default_day_weather_tips">未来7天\n无雨雪天气</string>
-
     <string name="menu_popup_delete">删除</string>
     <string name="menu_city_management">城市选择</string>
     <string name="menu_warning">预警</string>
     <string name="menu_settings">设置</string>
     <string name="menu_shard">分享</string>
-
     <string name="act_text_blur">高斯模糊</string>
     <string name="act_text_set_blur_raids">设置模糊半径:</string>
     <string name="act_text_set_blur_image">设置背景图片:</string>
@@ -55,7 +55,6 @@
     <string name="act_title_about">关于</string>
     <string name="act_title_warning">气象预警</string>
     <string name="act_title_select_city">选择城市</string>
-
     <string name="text_null">无</string>
     <string name="text_tips">提示</string>
     <string name="text_exit">退出</string>
@@ -69,14 +68,13 @@
     <string name="text_night_date">日夜晚</string>
     <string name="text_dynamic_background_error">动态背景加载出现错误</string>
     <string name="text_manual_selection">手动选择</string>
-    <string name="text_failed_to_locate">未能成功定位,请手动选择城市</string>
+    <string name="text_failed_to_locate">未能成功定位,请手动选择一个默认城市</string>
     <string name="text_warning_data_source">数据来源于中国气象局</string>
     <string name="text_default_city_not_exist">默认城市不存在！</string>
     <string name="text_cannot_del_default_city">默认城市不能删除</string>
     <string name="text_no_notification_permission">无通知权限，请手动打开通知栏的权限</string>
     <string name="text_widget_data_error">小部件获取数据失败</string>
     <string name="text_weather_update_time">天气更新时间 : %s</string>
-
     <string name="index_air_conditioning">空调指数</string>
     <string name="index_sport">运动指数</string>
     <string name="index_uv">紫外线指数</string>
@@ -84,14 +82,12 @@
     <string name="index_washing">洗车指数</string>
     <string name="index_air_pollution">空气污染扩散指数</string>
     <string name="index_clothes">穿衣指数</string>
-
     <string name="air_quality_good">优</string>
     <string name="air_quality_medium">良</string>
     <string name="air_quality_lightly_pollute">轻度污染</string>
     <string name="air_quality_medium_pollute">中度污染</string>
     <string name="air_quality_heavy_pollute">重度污染</string>
     <string name="air_quality_deep_pollute">严重污染</string>
-
     <string name="weather_sun">晴</string>
     <string name="weather_overcast">阴</string>
     <string name="weather_snow">雪</string>
@@ -100,11 +96,9 @@
     <string name="weather_thunder">雷</string>
     <string name="weather_light_rain">小雨</string>
     <string name="weather_shower">阵雨</string>
-
     <string name="contributor_1"><u>@零下一度</u></string>
-    <string name="contributor_2"><u>https://github.com/Mixiaoxiao/Weather</u></string>
-    <string name="contributor_3"><u>https://github.com/YugengWang/Windmill</u></string>
-
+    <string name="contributor_2"><u>Mixiaoxiao - Weather \n https://github.com/Mixiaoxiao/Weather</u></string>
+    <string name="contributor_3"><u>YugengWang - Windmill \n https://github.com/YugengWang/Windmill</u></string>
     <string name="pf_on">开</string>
     <string name="pf_off">关</string>
     <string name="pf_notification">天气通知</string>

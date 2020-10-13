@@ -121,7 +121,6 @@ public abstract class BaseDrawer {
         skyDrawable.draw(canvas);
     }
 
-
     public boolean draw(Canvas canvas, float alpha) {
         drawSkyBackground(canvas, alpha);
         return drawWeather(canvas, alpha);

@@ -85,8 +85,8 @@ public class LocationModelImpl implements LocationModel {
                 FileUtil.saveFile(precise_location, Constant.PRECISE_LOCATION_NAME);
                 locationMonitor.Success();
             } else {
-                locationMonitor.Failure();
                 stopLocation();
+                locationMonitor.Failure();
             }
         }
 

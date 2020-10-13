@@ -29,6 +29,9 @@ import com.tokyonth.weather.view.EnglishTextView;
 import com.tokyonth.weather.view.custom.SemicircleProgressView;
 import com.tokyonth.weather.view.custom.Windmill;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -42,7 +45,6 @@ public class WeatherPageFull extends BaseFragment {
     private ImageView iv_air_quality;
 
     private EnglishTextView tv_humidity;
-
     private SunriseSunsetView sunset_view;
     private Windmill windmill_big, windmill_small;
     private SemicircleProgressView semicircle_progress_view;
@@ -69,7 +71,6 @@ public class WeatherPageFull extends BaseFragment {
         tv_no2 = view.findViewById(R.id.aqi_no2_tv);
         tv_co = view.findViewById(R.id.aqi_co_tv);
         tv_o3 = view.findViewById(R.id.aqi_o3_tv);
-
         tv_air_quality = view.findViewById(R.id.weather_airquality_tv);
         tv_wind = view.findViewById(R.id.weather_wind_tv);
         tv_wind_speed = view.findViewById(R.id.weather_wind_speed_tv);
@@ -77,11 +78,9 @@ public class WeatherPageFull extends BaseFragment {
         tv_forecast_hourly = view.findViewById(R.id.weather_forecast_hourly_tips_tv);
         tv_forecast_day = view.findViewById(R.id.weather_forecast_day_tips_tv);
         tv_pressure = view.findViewById(R.id.weather_pressure_tv);
-
         iv_air_quality = view.findViewById(R.id.weather_airquality_image_iv);
         rv_weather_trend = view.findViewById(R.id.weather_trend_rv);
         rv_index = view.findViewById(R.id.weather_index_rv);
-
         windmill_big = view.findViewById(R.id.windmill_big);
         windmill_small = view.findViewById(R.id.windmill_small);
         semicircle_progress_view = view.findViewById(R.id.semicircle_progress_view);
@@ -107,30 +106,28 @@ public class WeatherPageFull extends BaseFragment {
 
     @Override
     protected void initData() {
-        if ((boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false)) {
-            setBlur(true);
+        if ((boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false) &&
+                (boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false)) {
+            setBlur();
         }
     }
 
-    private void setBlur(boolean isBlur){
-        View view = View.inflate(getContext(), R.layout.activity_main, null);
-        ImageView imageView = view.findViewById(R.id.iv_main_pic);
-        BlurSingle.BlurLayout blur_single;
+    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
+    public void receiveMsg(String insType) {
+        if ("blurImageChange".equals(insType)) {
+            setBlur();
+        }
+    }
+
+    private void setBlur(){
         List<View> list = new ArrayList<>();
         list.add(blur0);
         list.add(blur1);
         list.add(blur2);
         list.add(rv_weather_trend);
         list.add(blur3);
-        blur_single = new BlurSingle.BlurLayout(list, imageView);
-        blur_single.setRadius(5);
-
-        if (isBlur) {
-
-            //
-        } else {
-
-        }
+        new BlurSingle.BlurLayout(list).setRadius(8);
+        BlurSingle.initBkg(getContext(), 8, 32);
     }
 
     @SuppressLint("SetTextI18n")

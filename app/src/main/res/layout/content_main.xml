@@ -1,93 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="@color/transparent"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        app:elevation="0dp">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/app_bar"
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            android:fitsSystemWindows="true"
-            app:elevation="0dp">
+            android:layout_height="?attr/actionBarSize"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/AppTheme.PopupOverlay">
+            <ImageView
+                android:id="@+id/iv_default_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:src="@drawable/ic_title_local"
+                app:tint="@color/colorWhite"
+                tools:ignore="ContentDescription" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    tools:ignore="UseCompoundDrawables">
+            <TextView
+                android:id="@+id/tv_city_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:text="@string/act_text_positioning"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/iv_default_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_title_local"
-                        android:tint="@color/colorWhite"
-                        android:padding="8dp"
-                        tools:ignore="ContentDescription" />
+        </androidx.appcompat.widget.Toolbar>
 
-                    <TextView
-                        android:layout_marginStart="8dp"
-                        android:id="@+id/tv_city_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/act_text_positioning"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-                </LinearLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/vp2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-            </androidx.appcompat.widget.Toolbar>
-
-        </com.google.android.material.appbar.AppBarLayout>
-
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/sr_refresh_city"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <FrameLayout
-                        android:id="@+id/frag_simple"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                    <FrameLayout
-                        android:id="@+id/frag_full"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-
-                </LinearLayout>
-
-            </androidx.core.widget.NestedScrollView>
-
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    </LinearLayout>
-
-</merge>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

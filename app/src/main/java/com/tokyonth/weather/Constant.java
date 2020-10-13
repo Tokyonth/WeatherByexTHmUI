@@ -11,9 +11,12 @@ public class Constant {
     public static final String WEATHER_COLOR = "weather_color";
     public static final String DEFAULT_CITY_TEMP = "temp";
     public static final String DEFAULT_CITY_IMG = "img";
+    public static final String DEFAULT_CITY_QUALITY = "quality";
+    public static final String DEFAULT_CITY_LOW_TEMP = "low_temp";
+    public static final String DEFAULT_CITY_HIGH_TEMP = "low_high";
     public static final String SAVE_WEATHER_NAME = "weather.json";
     public static final String PRECISE_LOCATION_NAME = "precise_location";
-    public static final File DEFAULT_CACHE_PATH = BaseApplication.getContext().getExternalCacheDir();
+    public static final File DEFAULT_CACHE_PATH = BaseApplication.getContext().getCacheDir();
 
     public static final String SP_NOTIFICATION_WEATHER_KEY = "sp_notification_weather";
     public static final String SP_NOTIFICATION_WEATHER_STYLE_KEY = "sp_notification_weather_style";

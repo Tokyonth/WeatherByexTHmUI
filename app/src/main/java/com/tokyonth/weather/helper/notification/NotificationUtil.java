@@ -28,7 +28,7 @@ public class NotificationUtil {
                     .setPositiveButton(context.getString(R.string.text_definite), (dialog, which) -> {
                         Intent mIntent = new Intent()
                                 .setAction("android.settings.APPLICATION_DETAILS_SETTINGS")
-                                .setData(Uri.fromParts("package", context.getApplicationContext().getPackageName(), null));
+                                .setData(Uri.fromParts("package", context.getPackageName(), null));
                         context.startActivity(mIntent);
                     })
                     .create().show();

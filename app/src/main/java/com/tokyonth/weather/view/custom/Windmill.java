@@ -102,16 +102,16 @@ public class Windmill extends View {
         y1 = mCenterPoint.y;
 
         //radian(弧度)
-        rad1 = atan(width / 15 / (width / 30)); //x1,y1与x2,y2形成的角,以圆点为坐标原点,返回角度为-pi/2 至 pi/2  artan（y/x）
-        rad2 = atan(width / 6 / (width / 30));//x1,y1 与 x3,y3
+        rad1 = atan(width / 15f / (width / 30f)); //x1,y1与x2,y2形成的角,以圆点为坐标原点,返回角度为-pi/2 至 pi/2  artan（y/x）
+        rad2 = atan(width / 6f / (width / 30f));//x1,y1 与 x3,y3
         rad3 = PI / 2;//tan90 不存在
-        rad4 = atan(mCenterPoint.y / 2 / (-width / 30)) + PI;//因为返回角度为 -pi/2 至pi,所以加PI
+        rad4 = atan(mCenterPoint.y / 2f / (-width / 30f)) + PI;//因为返回角度为 -pi/2 至pi,所以加PI
 
         //r 为斜边长度,与上面要对应
-        r1 = Math.hypot(width / 30, width / 15);
-        r2 = Math.hypot(width / 30, width / 6);
+        r1 = Math.hypot(width / 30f, width / 15f);
+        r2 = Math.hypot(width / 30f, width / 6f);
         r3 = Math.hypot(0, mCenterPoint.y);
-        r4 = Math.hypot(width / 30, mCenterPoint.y / 2);
+        r4 = Math.hypot(width / 30f, mCenterPoint.y / 2f);
     }
 
     @Override
@@ -125,17 +125,17 @@ public class Windmill extends View {
 
     private void drawPillar(Canvas canvas) {
         Path mPillarPath = new Path();
-        mPillarPath.moveTo(mCenterPoint.x - width / 90, mCenterPoint.y - width / 90);
-        mPillarPath.lineTo(mCenterPoint.x + width / 90, mCenterPoint.y - width / 90);//连线
-        mPillarPath.lineTo(mCenterPoint.x + width / 35, height - height / 35);
-        mPillarPath.quadTo(mCenterPoint.x, height, mCenterPoint.x - width / 35, height - height / 35);//贝塞尔曲线，控制点和终点
+        mPillarPath.moveTo(mCenterPoint.x - width / 90f, mCenterPoint.y - width / 90f);
+        mPillarPath.lineTo(mCenterPoint.x + width / 90f, mCenterPoint.y - width / 90f);//连线
+        mPillarPath.lineTo(mCenterPoint.x + width / 35f, height - height / 35f);
+        mPillarPath.quadTo(mCenterPoint.x, height, mCenterPoint.x - width / 35f, height - height / 35f);//贝塞尔曲线，控制点和终点
         mPillarPath.close();//闭合图形
         canvas.drawPath(mPillarPath, mWindmillPaint);
     }
 
     private void drawWind(Canvas canvas) {
         Path mWindPath = new Path();
-        canvas.drawCircle(mCenterPoint.x, mCenterPoint.y, width / 40, mWindmillPaint);
+        canvas.drawCircle(mCenterPoint.x, mCenterPoint.y, width / 40f, mWindmillPaint);
         mWindPath.moveTo(x1, y1);
         x2 = mCenterPoint.x + (float) (r1 * Math.cos(rad1 + angle));
         y2 = mCenterPoint.y + (float) (r1 * Math.sin(rad1 + angle));
@@ -174,8 +174,6 @@ public class Windmill extends View {
         }
         this.windSpeed = windSpeed;
     }
-
-    private int i = 1;
 
     public void setAngle(float angle) {
         this.angle = angle;

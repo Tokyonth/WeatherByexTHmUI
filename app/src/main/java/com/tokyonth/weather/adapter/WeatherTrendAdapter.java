@@ -80,6 +80,8 @@ public class WeatherTrendAdapter extends RecyclerView.Adapter<WeatherTrendAdapte
             imageView = itemView.findViewById(R.id.weather_trend_item_iv_info);
             weather = itemView.findViewById(R.id.weather_trend_item_tv_weather);
             progressBar = itemView.findViewById(R.id.weather_trend_item_progressbar);
+
+            progressBar.setVisibility(View.GONE);
         }
     }
 

@@ -1,6 +1,5 @@
 package com.tokyonth.weather.view;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -17,7 +16,7 @@ import com.tokyonth.weather.helper.SvgResources;
 
 public class BurnRoundView extends View {
 
-    private static int DEFAULT_SIZE = 72;
+    private static final int DEFAULT_SIZE = 72;
     private int width, height;
     private int burnColor;
     private boolean isBurn;
@@ -43,7 +42,6 @@ public class BurnRoundView extends View {
         initView(attrs);
     }
 
-    @SuppressLint("Recycle")
     private void initView(AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.BurnRoundView);
         int imageId = array.getResourceId(R.styleable.BurnRoundView_burnSrc, 0);
@@ -52,11 +50,13 @@ public class BurnRoundView extends View {
         mPaint = new Paint();
         ConversionPic(imageId, color);
         isBurn = array.getBoolean(R.styleable.BurnRoundView_isBurn, true);
+
         if (isBurn) {
             burnColor = color & 0x60FFFFFF;
         } else {
             burnColor = color;
         }
+        array.recycle();
     }
 
     private void ConversionPic(int imageId, int color) {

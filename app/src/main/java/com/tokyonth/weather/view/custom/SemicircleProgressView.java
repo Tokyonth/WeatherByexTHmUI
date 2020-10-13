@@ -86,7 +86,6 @@ public class SemicircleProgressView extends View {
     /**
      * 初始化
      */
-    @SuppressLint("Recycle")
     private void init(AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SemicircleProgressView);
         SemicircleSize = typedArray.getDimensionPixelSize(R.styleable.SemicircleProgressView_semicircleSize, DisplayUtils.dip2px(getContext(), 100));
@@ -135,6 +134,7 @@ public class SemicircleProgressView extends View {
         pos = new float[2];
         tan = new float[2];
         matrix = new Matrix();
+        typedArray.recycle();
     }
 
     public String getTitle() {

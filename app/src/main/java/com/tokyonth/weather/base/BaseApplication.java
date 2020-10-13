@@ -26,12 +26,11 @@ public class BaseApplication extends Application {
         if (!FileUtil.isFile(Constant.SAVE_WEATHER_NAME)) {
             FileUtil.saveFile("", Constant.SAVE_WEATHER_NAME);
         }
-
-        boolean isOpen = (boolean)SPUtils.getData(Constant.SP_NOTIFICATION_WEATHER_KEY, false);
+        boolean isOpen = (boolean) SPUtils.getData(Constant.SP_NOTIFICATION_WEATHER_KEY, false);
         new NotificationWeather(context, isOpen);
     }
 
-    public static Context getContext(){
+    public static Context getContext() {
         return context;
     }
 

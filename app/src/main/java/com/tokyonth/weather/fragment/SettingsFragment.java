@@ -88,6 +88,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 new MaterialAlertDialogBuilder(context)
                         .setTitle("请选择")
                         .setSingleChoiceItems(new String[]{"极速数据"}, 0, (dialog, which) -> dialog.dismiss())
+                        .setNegativeButton("确定", null)
                         .create().show();
                 break;
             case "pf_choice_picture":

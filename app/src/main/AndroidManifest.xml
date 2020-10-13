@@ -26,16 +26,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        tools:ignore="AllowBackup,GoogleAppIndexingWarning,UnusedAttribute"
-        tools:targetApi="n">
-
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="c8db2524c8687ebd2919d7942e9f8409" />
+        tools:ignore="AllowBackup"
+        tools:targetApi="q">
 
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -62,6 +59,9 @@
             android:name=".activity.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="c8db2524c8687ebd2919d7942e9f8409" />
         <service android:name="com.amap.api.location.APSService" />
         <service
             android:name=".helper.service.WeatherTileService"

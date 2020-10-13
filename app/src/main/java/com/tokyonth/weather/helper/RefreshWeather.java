@@ -1,5 +1,7 @@
 package com.tokyonth.weather.helper;
 
+import android.util.Log;
+
 import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.presenter.WeatherView;
 import com.tokyonth.weather.utils.api.RetrofitFactory;
@@ -63,6 +65,7 @@ public class RefreshWeather {
 
                         @Override
                         public void onError(Throwable e) {
+                            Log.e("错误", "-->" + e + city);
                             weatherView.showError(e.toString());
                         }
 

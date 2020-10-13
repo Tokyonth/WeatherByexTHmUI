@@ -5,7 +5,7 @@ package com.tokyonth.weather.view.custom;
  */
 public class Cubic {
 
-    float a,b,c,d;         /* a + b*u + c*u^2 +d*u^3 */
+    float a,b,c,d;/* a + b*u + c*u^2 +d*u^3 */
 
     public Cubic(float a, float b, float c, float d){
         this.a = a;

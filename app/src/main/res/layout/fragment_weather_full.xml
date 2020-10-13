@@ -1,70 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/transparent"
-    android:orientation="vertical">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/weather_trend_rv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/frame_reveal_weather_msg"
-        android:padding="12dp" />
-
-    <include
-        android:id="@+id/content_weather_msg"
-        layout="@layout/pager_weather_msg" />
-
-    <include
-        android:id="@+id/pager_aqi_weather"
-        layout="@layout/pager_aqi_weather" />
+    android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/ll_ssv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/frame_reveal_weather_msg"
+        android:background="@color/transparent"
         android:orientation="vertical">
 
-        <com.tokyonth.weather.view.SunriseSunset.SunriseSunsetView
-            android:id="@+id/ssv"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/weather_trend_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingTop="16dp"
-            android:paddingRight="16dp"
-            android:paddingBottom="16dp"
-            app:ssvLabelHorizontalOffset="12dp"
-            app:ssvLabelTextColor="@color/colorWhite"
-            app:ssvLabelTextSize="12sp"
-            app:ssvLabelVerticalOffset="2dp"
-            app:ssvShadowColor="@color/sunViewShadowColor"
-            app:ssvSunRadius="6dp"
-            app:ssvTrackColor="@color/colorWhite"
-            app:ssvTrackWidth="1.5dp" />
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/frame_reveal_weather_msg" />
+
+        <include
+            android:id="@+id/content_weather_msg"
+            layout="@layout/pager_weather_msg" />
+
+        <include
+            android:id="@+id/pager_aqi_weather"
+            layout="@layout/pager_aqi_weather" />
+
+        <LinearLayout
+            android:id="@+id/ll_ssv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/frame_reveal_weather_msg"
+            android:orientation="vertical">
+
+            <com.tokyonth.weather.view.SunriseSunset.SunriseSunsetView
+                android:id="@+id/ssv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="16dp"
+                android:paddingTop="16dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="16dp"
+                app:ssvLabelHorizontalOffset="12dp"
+                app:ssvLabelTextColor="@color/colorWhite"
+                app:ssvLabelTextSize="12sp"
+                app:ssvLabelVerticalOffset="2dp"
+                app:ssvShadowColor="@color/sunViewShadowColor"
+                app:ssvSunRadius="6dp"
+                app:ssvTrackColor="@color/colorWhite"
+                app:ssvTrackWidth="1.5dp" />
+
+        </LinearLayout>
+
+        <include
+            android:id="@+id/pager_index_weather"
+            layout="@layout/pager_index_weather" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:padding="6dp"
+            android:text="@string/data_by_jisu"
+            android:textColor="@color/divider"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
-    <include
-        android:id="@+id/pager_index_weather"
-        layout="@layout/pager_index_weather" />
+</androidx.core.widget.NestedScrollView>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="6dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/data_by_jisu"
-        android:textColor="@color/divider"
-        android:textSize="12sp" />
-
-</LinearLayout>
 

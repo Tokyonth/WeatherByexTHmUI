@@ -56,4 +56,9 @@ public class SettingsActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.tokyonth.weather.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,12 +11,16 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tokyonth.weather.adapter.WeatherPagerAdapter;
 import com.tokyonth.weather.base.BaseActivity;
 import com.tokyonth.weather.Constant;
 import com.tokyonth.weather.R;
@@ -53,26 +59,21 @@ import org.litepal.LitePal;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends BaseActivity implements WeatherView {
 
+    private Weather weatherBean = null;
     private WeatherPresenter weatherPresenter;
     private DynamicWeatherView dynamicWeatherView;
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     private TextView tvCityName;
     private ImageView ivDefaultCity;
-    private ImageView ivMainPic;
+    private ImageView ivBlurPicture;
+    private ViewPager2 viewPager2;
 
+    private boolean isFirst = true;
     private boolean isDefaultCity = true;
     private String cityName = null;
-
-    @Override
-    public void initActivity(Bundle savedInstanceState) {
-        EventBus.getDefault().register(this);
-        startSplashActivity();
-    }
 
     @Override
     public int setActivityView() {
@@ -89,6 +90,12 @@ public class MainActivity extends BaseActivity implements WeatherView {
         return true;
     }
 
+    @Override
+    public void initActivity(Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        startSplashActivity();
+    }
+
     private void startSplashActivity() {
         if ((boolean) SPUtils.getData(Constant.IMPORT_DATA, true)) {
             startActivity(new Intent(this, SplashActivity.class));
@@ -96,6 +103,8 @@ public class MainActivity extends BaseActivity implements WeatherView {
         } else {
             initView();
             initData();
+            initPictureBackground();
+            //initFragmentWeatherPage();
         }
     }
 
@@ -104,13 +113,20 @@ public class MainActivity extends BaseActivity implements WeatherView {
         new LocationPresenterImpl().loadLocation(this, new LocationMonitor() {
             @Override
             public void Failure() {
-                new MaterialAlertDialogBuilder(MainActivity.this)
-                        .setTitle(getString(R.string.text_tips))
-                        .setMessage(getString(R.string.text_failed_to_locate))
-                        .setNegativeButton(getString(R.string.text_manual_selection), (dialog, which) -> startActivity(new Intent(MainActivity.this, CityActivity.class)))
-                        .setPositiveButton(getString(R.string.text_cancel), null)
-                        .setCancelable(false)
-                        .create().show();
+                if (LitePal.find(DefaultCity.class, 1) == null) {
+                    new MaterialAlertDialogBuilder(MainActivity.this)
+                            .setTitle(getString(R.string.text_tips))
+                            .setMessage(getString(R.string.text_failed_to_locate))
+                            .setNegativeButton(getString(R.string.text_manual_selection),
+                                    (dialog, which) -> startActivity(new Intent(MainActivity.this, CityActivity.class)))
+                            .setPositiveButton(getString(R.string.text_cancel), null)
+                            .setCancelable(false)
+                            .create().show();
+                } else {
+                    DefaultCity defaultCity = LitePal.find(DefaultCity.class, 1);
+                    tvCityName.setText(defaultCity.getCityName());
+                    cityName = defaultCity.getCityName();
+                }
             }
 
             @Override
@@ -118,46 +134,51 @@ public class MainActivity extends BaseActivity implements WeatherView {
 
             }
         });
-        if (!Objects.equals(FileUtil.getFile(Constant.SAVE_WEATHER_NAME), "")) {
-            Weather weather = new Gson().fromJson(FileUtil.getFile(Constant.SAVE_WEATHER_NAME), Weather.class);
-            setWeatherBackground(weather);
-            new Handler().postDelayed(() -> EventBus.getDefault().post(weather), 100);
+        String jsonContent = FileUtil.getFile(Constant.SAVE_WEATHER_NAME);
+        if (jsonContent != null && !jsonContent.equals("")) {
+            weatherBean = new Gson().fromJson(FileUtil.getFile(Constant.SAVE_WEATHER_NAME), Weather.class);
         }
     }
 
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setOverflowIcon(getDrawable(R.drawable.ic_title_more));
+        toolbar.setOverflowIcon(ContextCompat.getDrawable(this, R.drawable.ic_title_more));
         setSupportActionBar(toolbar);
         setTitle(null);
 
+        /*TypedValue typedValue = new TypedValue();
+        getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true);
+        int toolBarHeight = TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                DisplayUtils.getScreenWidth(this),
-                DisplayUtils.getScreenHeight(this) - (statusBarHeight + toolbar.getHeight()) * 2);
-        findViewById(R.id.frag_simple).setLayoutParams(params);
+        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);*/
+
+        /*int resourceId= getResources().getIdentifier("navigation_bar_height","dimen","android");
+        int height = getResources().getDimensionPixelSize(resourceId);
+
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DisplayUtils.getScreenWidth(MainActivity.this),
+                DisplayUtils.getScreenHeight(MainActivity.this) + height);
+        findViewById(R.id.frag_simple).setLayoutParams(params);*/
 
         ivDefaultCity = findViewById(R.id.iv_default_city);
         tvCityName = findViewById(R.id.tv_city_name);
-        ivMainPic = findViewById(R.id.iv_main_pic);
-        swipeRefreshLayout = findViewById(R.id.sr_refresh_city);
+        ivBlurPicture = findViewById(R.id.iv_main_pic);
         dynamicWeatherView = findViewById(R.id.dynamic_weather_view);
-        swipeRefreshLayout.setOnRefreshListener(this::refreshWeather);
-        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> false);
-        swipeRefreshLayout.setRefreshing(true);
 
-        setMainPicBackground();
-        initFragmentPage();
+        viewPager2 = findViewById(R.id.vp2);
+        viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
+        viewPager2.setAdapter(new WeatherPagerAdapter(this));
+        viewPager2.setOffscreenPageLimit(1);
+        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+               // boolean is = ;
+               // if (position != 0)
+                  //  swipeRefreshLayout.setEnabled(position == 0);
+            }
+        });
     }
 
-    private void initFragmentPage() {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frag_simple, new WeatherPageSimple());
-        fragmentTransaction.replace(R.id.frag_full, new WeatherPageFull());
-        fragmentTransaction.commit();
-    }
 
     public void setWeatherBackground(Weather weather) {
         List<Integer> list = WeatherInfoHelper.getSunriseSunset(weather);
@@ -170,31 +191,24 @@ public class MainActivity extends BaseActivity implements WeatherView {
         }
     }
 
-    private void refreshWeather() {
-        if (NetworkUtil.isWifiConnected() || NetworkUtil.isMobileConnected()) {
-            new RefreshWeather(isDefaultCity, cityName).setWeatherView(this);
-        } else {
-            Snackbar.make(findViewById(R.id.cdl_weather_basic), getString(R.string.no_network_connection), Snackbar.LENGTH_LONG).show();
-            swipeRefreshLayout.setRefreshing(false);
-        }
-    }
 
-    private void setMainPicBackground() {
+    private void initPictureBackground() {
         if ((boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false)) {
             String path = (String) SPUtils.getData(Constant.SP_PICTURE_PATH_KEY, "");
             if (!path.equals("")) {
-                FileInputStream fis = null;
                 try {
-                    fis = new FileInputStream(path);
+                    FileInputStream fileInputStream = new FileInputStream(path);
+                    Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                    ivBlurPicture.setImageBitmap(bitmap);
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
-                Bitmap bitmap = BitmapFactory.decodeStream(fis);
-                ivMainPic.setImageBitmap(bitmap);
             }
-            ivMainPic.setVisibility(View.VISIBLE);
+            ivBlurPicture.setVisibility(View.VISIBLE);
+           // dynamicWeatherView.onResume();
         } else {
-            ivMainPic.setVisibility(View.GONE);
+            ivBlurPicture.setVisibility(View.GONE);
+           // dynamicWeatherView.onPause();
         }
     }
 
@@ -214,30 +228,37 @@ public class MainActivity extends BaseActivity implements WeatherView {
         isDefaultCity = false;
     }
 
+    @Subscribe
+    public void blurChange(boolean isChange) {
+        //if (isChange)
+            //initFragmentWeatherPage();
+    }
+
     @Override
     public void showWeather(Weather weather, boolean isRefresh) {
         setWeatherBackground(weather);
         EventBus.getDefault().post(weather);
-        new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 1000);
-
-        tvCityName.setText(LitePal.find(DefaultCity.class, 1).getCityName());
         String cityName = weather.getInfo().getCityName();
-        List<SavedCity> savedCityList = LitePal.findAll(SavedCity.class);
+        tvCityName.setText(cityName);
+       // new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 1000);
+
+       // tvCityName.setText(LitePal.find(DefaultCity.class, 1).getCityName());
+        /*List<SavedCity> savedCityList = LitePal.findAll(SavedCity.class);
         for (SavedCity savedCity : savedCityList) {
             if (savedCity.getCityName().equals(cityName)) {
                 tvCityName.setText(cityName);
                 break;
             }
-        }
+        }*/
         if (isRefresh) {
-            swipeRefreshLayout.setRefreshing(false);
+          //  swipeRefreshLayout.setRefreshing(false);
             Snackbar.make(findViewById(R.id.cdl_weather_basic), getString(R.string.refresh_success), Snackbar.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void showError(String error) {
-        swipeRefreshLayout.setRefreshing(false);
+       // swipeRefreshLayout.setRefreshing(false);
         Snackbar.make(findViewById(R.id.cdl_weather_basic), error + getString(R.string.load_last_time_msg), Snackbar.LENGTH_LONG).show();
     }
 
@@ -251,6 +272,18 @@ public class MainActivity extends BaseActivity implements WeatherView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_city:
+                /*Intent intent = new Intent(MainActivity.this, CityActivity.class);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,
+                        Pair.create(tvCityName,"sharedChallenger")).toBundle());*/
+               // Activity activity = (Activity) getContext();
+               /* ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                        new Pair(dynamicWeatherView, CityActivity.IMAGE_TRANSITION_NAME)
+                       // new Pair(address1, DetailActivity.ADDRESS1_TRANSITION_NAME)
+                );
+                Intent intent = new Intent(this, CityActivity.class);
+                //intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, imageUrl);
+                ActivityCompat.startActivity(this, intent, options.toBundle());*/
+
                 startActivity(new Intent(MainActivity.this, CityActivity.class));
                 break;
             case R.id.action_settings:
@@ -267,7 +300,25 @@ public class MainActivity extends BaseActivity implements WeatherView {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
-            setMainPicBackground();
+            initPictureBackground();
+            if ((boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false)) {
+                EventBus.getDefault().postSticky("blurImageChange");
+            }
+            /*if (!(boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false) ||
+                    !(boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false)) {
+                initFragmentWeatherPage();
+                isFirst = true;
+            }*/
+        }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (weatherBean != null && isFirst) {
+            setWeatherBackground(weatherBean);
+            EventBus.getDefault().post(weatherBean);
+            isFirst = false;
         }
     }
 

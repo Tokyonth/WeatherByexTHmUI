@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/colorBackground"
+    android:orientation="vertical"
     tools:context=".activity.WarningActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
         android:background="@color/colorBackground"
+        android:fitsSystemWindows="true"
         android:theme="@style/AppTheme.PopupOverlay"
         app:elevation="0dp">
 
@@ -29,9 +29,8 @@
         android:id="@+id/warning_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="12dp"
         android:clipToPadding="false"
-        android:overScrollMode="never"/>
+        android:overScrollMode="never"
+        android:paddingTop="12dp" />
 
 </LinearLayout>
-

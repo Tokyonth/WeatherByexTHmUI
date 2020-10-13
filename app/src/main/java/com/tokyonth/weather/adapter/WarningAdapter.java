@@ -7,8 +7,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -84,7 +86,7 @@ public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
                 } else if (((ContentViewHolder) holder).contentLl.getVisibility() == View.VISIBLE) {
                     ((ContentViewHolder) holder).animateClose(((ContentViewHolder) holder).contentLl);
-                    ((ContentViewHolder) holder).iv_arrow.setImageDrawable(BaseApplication.getContext().getDrawable(R.drawable.ic_arrow_right));
+                    ((ContentViewHolder) holder).iv_arrow.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_arrow_right));
                 }
             });
         } else if (holder instanceof FooterViewHolder) {
@@ -203,7 +205,7 @@ public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 holder.contentTv.setTextColor(textColor);
                 holder.progressBar_load.setVisibility(View.GONE);
                 holder.iv_arrow.setVisibility(View.VISIBLE);
-                holder.iv_arrow.setImageDrawable(BaseApplication.getContext().getDrawable(R.drawable.ic_arrow_open));
+                holder.iv_arrow.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_arrow_open));
                 holder.animateOpen((holder).contentLl);
             });
         });

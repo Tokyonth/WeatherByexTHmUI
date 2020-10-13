@@ -35,15 +35,15 @@ public class WeekWeatherView extends View {
     /**
      * x轴集合
      */
-    private float mXAxis[] = new float[7];
+    private float[] mXAxis = new float[7];
     /**
      * 白天y轴集合
      */
-    private float mYAxisDay[] = new float[7];
+    private float[] mYAxisDay = new float[7];
     /**
      * 夜间y轴集合
      */
-    private float mYAxisNight[] = new float[7];
+    private float[] mYAxisNight = new float[7];
     /**
      * x,y轴集合数
      */
@@ -59,7 +59,6 @@ public class WeekWeatherView extends View {
     private Paint tempPaint;
     private Paint pointPaint;
     private Paint tempLinePaint;
-
 
     public WeekWeatherView(Context context) {
         this(context, null);
@@ -104,7 +103,7 @@ public class WeekWeatherView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         width = w;
         height = h;
-        float wh = width / 14;
+        float wh = width / 14f;
         mXAxis[0] = wh;
         mXAxis[1] = wh * 3;
         mXAxis[2] = wh * 5;
@@ -171,12 +170,12 @@ public class WeekWeatherView extends View {
         // y轴一端到控件一端的距离
         float length = DisplayUtils.dip2px(context, 20);
         // y轴高度
-        float yAxisHeight = height / 6 * 5 - length * 2;
+        float yAxisHeight = height / 6f * 5 - length * 2;
         // 当温度都相同时（被除数不能为0）
         if (parts == 0) {
             for (int i = 0; i < LENGTH; i++) {
-                mYAxisDay[i] = height / 6 * 5 / 2;
-                mYAxisNight[i] = height / 6 * 5 / 2;
+                mYAxisDay[i] = height / 6f * 5 / 2;
+                mYAxisNight[i] = height / 6f * 5 / 2;
             }
         } else {
             float partValue = yAxisHeight / parts;
@@ -265,15 +264,15 @@ public class WeekWeatherView extends View {
             float strWidth = rect.width();//字符串的宽度
             float strHeight = rect.height();//字符串的高度
             if (i == 0) {
-                canvas.drawText(str, width / 12 - strWidth / 2 + width / 7 * i, height / 2 + 100, textPaint);
+                canvas.drawText(str, width / 12f - strWidth / 2 + width / 7f * i, height / 2f + 100, textPaint);
             } else {
-                canvas.drawText(str, width / 14 - strWidth / 2 + width / 7 * i, height / 2 + 100, textPaint);
+                canvas.drawText(str, width / 14f - strWidth / 2 + width / 7f * i, height / 2f + 100, textPaint);
             }
             int weatherImagePath = WeatherInfoHelper.getWeatherImagePath(data_list.get(i).getDay().getImg());
             Bitmap bitmap = SvgResources.getBitmapFromDrawable(weatherImagePath);
             bitmap = Bitmap.createScaledBitmap(bitmap, 80, 80, true);
-            canvas.drawBitmap(bitmap, width / 12f - strWidth / 2 + width / 7 * i, height / 2 + 160, null);
-            canvas.drawText(str_date.substring(5), width / 12.5f - strWidth / 2 + width / 7 * i, height / 2 + 310, textPaint);
+            canvas.drawBitmap(bitmap, width / 12f - strWidth / 2 + width / 7f * i, height / 2f + 160, null);
+            canvas.drawText(str_date.substring(5), width / 12.5f - strWidth / 2 + width / 7f * i, height / 2f + 310, textPaint);
         }
     }
 

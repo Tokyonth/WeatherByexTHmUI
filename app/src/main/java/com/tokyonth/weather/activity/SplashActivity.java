@@ -1,11 +1,8 @@
 package com.tokyonth.weather.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -25,9 +22,9 @@ import android.widget.Toast;
 import com.tokyonth.weather.Constant;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.base.BaseActivity;
-import com.tokyonth.weather.presenter.CityPresenter;
 import com.tokyonth.weather.presenter.CityPresenterImpl;
 import com.tokyonth.weather.presenter.LoadCitySituationListener;
+import com.tokyonth.weather.utils.NetworkUtil;
 import com.tokyonth.weather.utils.SPUtils;
 
 import java.util.ArrayList;
@@ -45,7 +42,7 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void initActivity(Bundle savedInstanceState) {
-        if (isNetworkConnected(this)) {
+        if (NetworkUtil.isNetworkConnected()) {
             initView();
         } else {
             new MaterialAlertDialogBuilder(this)
@@ -87,20 +84,6 @@ public class SplashActivity extends BaseActivity {
                 Snackbar.make(containerRl, getString(R.string.import_failed), Snackbar.LENGTH_LONG).show();
             }
         });
-    }
-
-    private boolean isNetworkConnected(Context context) {
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mNetworkInfo = null;
-            if (mConnectivityManager != null) {
-                mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-            }
-            if (mNetworkInfo != null) {
-                return mNetworkInfo.isAvailable();
-            }
-        }
-        return false;
     }
 
     private void showTips() {

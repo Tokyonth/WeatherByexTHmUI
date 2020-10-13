@@ -2,8 +2,6 @@ package com.tokyonth.weather.view.search;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.SuppressLint;
-import android.os.Build;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.animation.DecelerateInterpolator;
@@ -20,19 +18,7 @@ class SearchAnim {
         void onShowAnimationEnd();
     }
 
-    @SuppressLint({"NewApi", "ObsoleteSdkInt"})
     private void actionOtherVisible(final boolean isShow, final View animView) {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            if (isShow) {
-                animView.setVisibility(View.VISIBLE);
-                if (mListener != null) mListener.onShowAnimationEnd();
-            } else {
-                animView.setVisibility(View.GONE);
-                if (mListener != null) mListener.onHideAnimationEnd();
-            }
-            return;
-        }
-
         Animator anim;
         if (isShow) {
             anim = ViewAnimationUtils.createCircularReveal(animView, animView.getWidth() / 2,

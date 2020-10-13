@@ -29,8 +29,8 @@ import static android.app.Notification.VISIBILITY_SECRET;
 public class NotificationWeather {
 
     private Context context;
-    private int notificationId = 0;
     private Weather weather;
+    private int notificationId = 0;
 
     public NotificationWeather(Context context, boolean isOpen) {
         this.context = context;

@@ -1,62 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sr_refresh_city"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="8"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent">
 
-        <com.tokyonth.weather.view.TempTextView
-            android:id="@+id/tv_weather_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/ll_0"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:gravity="center"
-            android:padding="@dimen/text_view_padding"
-            android:textColor="@color/colorWhite"
-            android:textSize="72sp"
-            tools:text="32" />
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/week_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_weather_tips"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/frame_test"
-            android:gravity="center"
-            android:paddingLeft="26dp"
-            android:paddingTop="10dp"
-            android:paddingRight="26dp"
-            android:paddingBottom="10dp"
-            android:textColor="@android:color/white" />
+            <com.tokyonth.weather.view.TempTextView
+                android:id="@+id/tv_weather_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/text_view_padding"
+                android:textColor="@color/colorWhite"
+                android:textSize="72sp"
+                tools:text="32" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tv_weather_tips"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="48dp"
+                android:background="@drawable/frame_test"
+                android:gravity="center"
+                android:paddingLeft="26dp"
+                android:paddingTop="10dp"
+                android:paddingRight="26dp"
+                android:paddingBottom="10dp"
+                android:textColor="@android:color/white" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="4"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_weather_update_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:textColor="@android:color/white" />
+        </LinearLayout>
 
         <com.tokyonth.weather.view.custom.WeekWeatherView
             android:id="@+id/week_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="240dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ll_0"/>
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
