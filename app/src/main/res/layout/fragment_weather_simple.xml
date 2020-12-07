@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.tokyonth.weather.widget.view.TempTextView
+        <com.tokyonth.weather.widget.TempTextView
             android:id="@+id/tv_weather_temp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

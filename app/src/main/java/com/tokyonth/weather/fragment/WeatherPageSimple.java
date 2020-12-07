@@ -12,7 +12,7 @@ import com.tokyonth.weather.model.bean.BlurEvent;
 import com.tokyonth.weather.model.bean.ImageBackgroundEvent;
 import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.utils.SPUtils;
-import com.tokyonth.weather.widget.view.TempTextView;
+import com.tokyonth.weather.widget.TempTextView;
 import com.tokyonth.weather.widget.WeekWeatherView;
 
 import org.greenrobot.eventbus.Subscribe;

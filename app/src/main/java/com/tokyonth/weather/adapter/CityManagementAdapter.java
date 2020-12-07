@@ -25,9 +25,9 @@ import com.tokyonth.weather.utils.DateUtil;
 import com.tokyonth.weather.utils.DisplayUtils;
 import com.tokyonth.weather.utils.SPUtils;
 import com.tokyonth.weather.api.Api;
-import com.tokyonth.weather.widget.view.EnglishTextView;
 import com.tokyonth.weather.api.RetrofitFactory;
 import com.tokyonth.weather.helper.WeatherInfoHelper;
+import com.tokyonth.weather.widget.EnglishTextView;
 
 import org.litepal.LitePal;
 

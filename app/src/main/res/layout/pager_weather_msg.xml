@@ -89,7 +89,7 @@
                 android:src="@drawable/icon_humidity"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.widget.view.EnglishTextView
+            <com.tokyonth.weather.widget.EnglishTextView
                 android:id="@+id/weather_humidity_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                 android:src="@drawable/ic_pressure"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.widget.view.EnglishTextView
+            <com.tokyonth.weather.widget.EnglishTextView
                 android:id="@+id/weather_pressure_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                 android:src="@drawable/ic_wind_speed"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.widget.view.EnglishTextView
+            <com.tokyonth.weather.widget.EnglishTextView
                 android:id="@+id/weather_wind_speed_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                 android:src="@drawable/icon_sun"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.widget.view.EnglishTextView
+            <com.tokyonth.weather.widget.EnglishTextView
                 android:id="@+id/weather_forecast_day_tips_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

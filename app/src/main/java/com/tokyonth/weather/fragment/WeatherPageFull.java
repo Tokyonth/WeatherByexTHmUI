@@ -23,12 +23,12 @@ import com.tokyonth.weather.helper.WeatherInfoHelper;
 
 import com.tokyonth.weather.model.bean.entity.Hourly;
 import com.tokyonth.weather.utils.SPUtils;
-import com.tokyonth.weather.widget.view.SunriseSunset.formatter.SunriseSunsetLabelFormatter;
-import com.tokyonth.weather.widget.view.SunriseSunset.model.Time;
-import com.tokyonth.weather.widget.view.SunriseSunset.SunriseSunsetView;
-import com.tokyonth.weather.widget.view.EnglishTextView;
+import com.tokyonth.weather.widget.EnglishTextView;
 import com.tokyonth.weather.widget.SemicircleProgressView;
 import com.tokyonth.weather.widget.Windmill;
+import com.tokyonth.weather.widget.sunrisesunset.SunriseSunsetView;
+import com.tokyonth.weather.widget.sunrisesunset.formatter.SunriseSunsetLabelFormatter;
+import com.tokyonth.weather.widget.sunrisesunset.model.Time;
 
 import java.util.ArrayList;
 import java.util.List;

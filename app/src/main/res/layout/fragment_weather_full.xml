@@ -37,7 +37,7 @@
             android:background="@drawable/frame_reveal_weather_msg"
             android:orientation="vertical">
 
-            <com.tokyonth.weather.widget.view.SunriseSunset.SunriseSunsetView
+            <com.tokyonth.weather.widget.sunrisesunset.SunriseSunsetView
                 android:id="@+id/ssv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

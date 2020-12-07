@@ -75,7 +75,7 @@
                     tools:src="@drawable/weather_sunny"
                     app:tint="@android:color/white" />
 
-                <com.tokyonth.weather.widget.view.EnglishTextView
+                <com.tokyonth.weather.widget.EnglishTextView
                     android:id="@+id/city_management_weather_temp_tv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

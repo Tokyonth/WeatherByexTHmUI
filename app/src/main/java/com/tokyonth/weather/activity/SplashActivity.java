@@ -69,6 +69,7 @@ public class SplashActivity extends BaseActivity {
         Animation rotateAnimation = AnimationUtils.loadAnimation(this, R.anim.rotate_anim);
         findViewById(R.id.splash_loading_iv).startAnimation(rotateAnimation);
         showTips();
+        importCityData();
     }
 
     private void importCityData() {
@@ -129,7 +130,6 @@ public class SplashActivity extends BaseActivity {
                         return;
                     }
                 }
-                importCityData();
             } else {
                 Toast.makeText(this, getString(R.string.unknown_error), Toast.LENGTH_SHORT).show();
                 finish();
