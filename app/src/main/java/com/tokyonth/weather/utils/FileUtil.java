@@ -1,6 +1,6 @@
 package com.tokyonth.weather.utils;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -16,7 +16,7 @@ public class FileUtil {
         // 创建String对象保存文件名路径
         try {
             // 创建指定路径的文件
-            File file = new File(Constant.DEFAULT_CACHE_PATH, fileName);
+            File file = new File(Constants.DEFAULT_CACHE_PATH, fileName);
             // 如果文件不存在
             if (file.exists()) {
                 // 创建新的空文件
@@ -40,7 +40,7 @@ public class FileUtil {
     public static void deletefile(String fileName) {
         try {
             // 找到文件所在的路径并删除该文件
-            File file = new File(Constant.DEFAULT_CACHE_PATH, fileName);
+            File file = new File(Constants.DEFAULT_CACHE_PATH, fileName);
             file.delete();
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,7 +48,7 @@ public class FileUtil {
     }
 
     public static boolean isFile(String fileName) {
-        File file = new File(Constant.DEFAULT_CACHE_PATH, fileName);
+        File file = new File(Constants.DEFAULT_CACHE_PATH, fileName);
         return file.exists();
     }
 
@@ -58,7 +58,7 @@ public class FileUtil {
     public static String getFile(String fileName) {
         try {
             // 创建文件
-            File file = new File(Constant.DEFAULT_CACHE_PATH,fileName);
+            File file = new File(Constants.DEFAULT_CACHE_PATH,fileName);
             // 创建FileInputStream对象
             FileInputStream fis = new FileInputStream(file);
             // 创建字节数组 每次缓冲1M

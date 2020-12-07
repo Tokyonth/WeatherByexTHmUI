@@ -19,7 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.base.BaseActivity;
 import com.tokyonth.weather.presenter.CityPresenterImpl;
@@ -110,7 +110,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startHomeActivity() {
-        SPUtils.putData(Constant.IMPORT_DATA, false);
+        SPUtils.putData(Constants.IMPORT_DATA, false);
         new Handler().postDelayed(() -> {
             Intent homeIntent = new Intent(SplashActivity.this, MainActivity.class);
             startActivity(homeIntent);

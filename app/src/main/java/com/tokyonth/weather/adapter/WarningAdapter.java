@@ -3,25 +3,20 @@ package com.tokyonth.weather.adapter;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.tokyonth.weather.base.BaseApplication;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.utils.HttpUtil;
 
@@ -33,10 +28,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-
-    private static final int TYPE_BODY = 0;
-    private static final int TYPE_FOOTER = 1;
+public class WarningAdapter extends RecyclerView.Adapter<WarningAdapter.WarningViewHolder> {
 
     private Activity activity;
     private List<String> warningList;
@@ -52,80 +44,59 @@ public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == TYPE_BODY) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_warning, parent, false);
-            return new ContentViewHolder(view);
-        } else {
-            View footerView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_warning_footer, parent, false);
-            return new FooterViewHolder(footerView);
-        }
+    public WarningAdapter.WarningViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_warning, parent, false);
+        return new WarningViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
-        if (holder instanceof ContentViewHolder) {
-            String warningTitle = warningList.get(position);
-            ((ContentViewHolder) holder).titleTv.setText(warningTitle);
-            ((ContentViewHolder) holder).itemView.setOnClickListener(v -> {
-                if (((ContentViewHolder) holder).contentLl.getVisibility() == View.GONE) {
-                    ((ContentViewHolder) holder).iv_arrow.setVisibility(View.GONE);
-                    ((ContentViewHolder) holder).progressBar_load.setVisibility(View.VISIBLE);
-                    if (position == 0) {
-                        String tempUrl = "http://www.nmc.cn/publish/country/warning/megatemperature.html";
-                        getWarningContent(tempUrl, ((ContentViewHolder) holder));
-                    } else if (position == 1) {
-                        String rainUrl = "http://www.nmc.cn/publish/country/warning/downpour.html";
-                        getWarningContent(rainUrl, ((ContentViewHolder) holder));
-                    } else if (position == 2) {
-                        String sandUrl = "http://www.nmc.cn/publish/country/warning/dust.html";
-                        getWarningContent(sandUrl, ((ContentViewHolder) holder));
-                    } else if (position == 3) {
-                        String convectionUrl = "http://www.nmc.cn/publish/country/warning/strong_convection.html";
-                        getWarningContent(convectionUrl, ((ContentViewHolder) holder));
-                    }
-                } else if (((ContentViewHolder) holder).contentLl.getVisibility() == View.VISIBLE) {
-                    ((ContentViewHolder) holder).animateClose(((ContentViewHolder) holder).contentLl);
-                    ((ContentViewHolder) holder).iv_arrow.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_arrow_right));
+    public void onBindViewHolder(@NonNull final WarningAdapter.WarningViewHolder holder, final int position) {
+        String warningTitle = warningList.get(position);
+        holder.titleTv.setText(warningTitle);
+        holder.itemView.setOnClickListener(v -> {
+            if (holder.contentTv.getVisibility() == View.GONE) {
+                holder.iv_arrow.setVisibility(View.GONE);
+                holder.progressBar_load.setVisibility(View.VISIBLE);
+                if (position == 0) {
+                    String tempUrl = "http://www.nmc.cn/publish/country/warning/megatemperature.html";
+                    getWarningContent(tempUrl, holder);
+                } else if (position == 1) {
+                    String rainUrl = "http://www.nmc.cn/publish/country/warning/downpour.html";
+                    getWarningContent(rainUrl, holder);
+                } else if (position == 2) {
+                    String sandUrl = "http://www.nmc.cn/publish/country/warning/dust.html";
+                    getWarningContent(sandUrl, holder);
+                } else if (position == 3) {
+                    String convectionUrl = "http://www.nmc.cn/publish/country/warning/strong_convection.html";
+                    getWarningContent(convectionUrl, holder);
                 }
-            });
-        } else if (holder instanceof FooterViewHolder) {
-            ((FooterViewHolder) holder).footerTv.setText("数据来源于中央气象台");
-        }
-    }
-
-    @Override
-    public int getItemViewType(int position) {
-        if (position == warningList.size()) {
-            return TYPE_FOOTER;
-        } else {
-            return TYPE_BODY;
-        }
+            } else if (holder.contentTv.getVisibility() == View.VISIBLE) {
+                holder.animateClose(holder.contentTv);
+                holder.iv_arrow.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_arrow_right));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return warningList.size() + 1;
+        return warningList.size();
     }
 
-    static class ContentViewHolder extends RecyclerView.ViewHolder {
+    static class WarningViewHolder extends RecyclerView.ViewHolder {
 
         private TextView titleTv, contentTv;
-        private LinearLayout contentLl, titleLl;
         private ProgressBar progressBar_load;
         private ImageView iv_arrow;
 
         private int hiddenLayoutHeight;
 
-        ContentViewHolder(View itemView) {
+        WarningViewHolder(View itemView) {
             super(itemView);
             progressBar_load = itemView.findViewById(R.id.progress_load);
             iv_arrow = itemView.findViewById(R.id.iv_arrow);
-            titleLl = itemView.findViewById(R.id.item_warning_title_ll);
-            contentLl = itemView.findViewById(R.id.item_warning_content_ll);
             titleTv = itemView.findViewById(R.id.item_warning_title);
             contentTv = itemView.findViewById(R.id.item_warning_content_tv);
-            hiddenLayoutHeight = contentLl.getLayoutParams().height;
+            hiddenLayoutHeight = contentTv.getLayoutParams().height;
         }
 
         private void animateOpen(View view) {
@@ -160,19 +131,7 @@ public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    static class FooterViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView footerTv;
-
-        FooterViewHolder(View itemView) {
-            super(itemView);
-            footerTv = itemView.findViewById(R.id.item_warning_footer_tv);
-        }
-
-    }
-
-    @SuppressLint("SetTextI18n")
-    private void getWarningContent(String url, final ContentViewHolder holder) {
+    private void getWarningContent(String url, final WarningViewHolder holder) {
         HttpUtil.doGetAsynchronous(url, result -> {
             if (result == null) {
                 return;
@@ -201,12 +160,12 @@ public class WarningAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         textColor = Color.parseColor("#D50000");
                         break;
                 }
-                holder.contentTv.setText("\t\t\t" + title + content);
+                holder.contentTv.setText(String.format("\t\t\t%s%s", title, content));
                 holder.contentTv.setTextColor(textColor);
                 holder.progressBar_load.setVisibility(View.GONE);
                 holder.iv_arrow.setVisibility(View.VISIBLE);
                 holder.iv_arrow.setImageDrawable(ContextCompat.getDrawable(activity, R.drawable.ic_arrow_open));
-                holder.animateOpen((holder).contentLl);
+                holder.animateOpen((holder).contentTv);
             });
         });
     }

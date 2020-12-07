@@ -53,7 +53,7 @@
 
         </LinearLayout>
 
-        <com.tokyonth.weather.view.custom.SemicircleProgressView
+        <com.tokyonth.weather.widget.SemicircleProgressView
             android:id="@+id/semicircle_progress_view"
             android:layout_width="120dp"
             android:layout_height="120dp"

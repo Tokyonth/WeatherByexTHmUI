@@ -2,9 +2,7 @@ package com.tokyonth.weather.adapter;
 
 import androidx.annotation.NonNull;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,13 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.R;
-import com.tokyonth.weather.activity.MainActivity;
 import com.tokyonth.weather.dynamic.DynamicWeatherView;
 import com.tokyonth.weather.helper.WeatherTypeHelper;
 import com.tokyonth.weather.model.bean.CityWeatherInfo;
@@ -28,10 +24,9 @@ import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.utils.DateUtil;
 import com.tokyonth.weather.utils.DisplayUtils;
 import com.tokyonth.weather.utils.SPUtils;
-import com.tokyonth.weather.utils.api.Api;
-import com.tokyonth.weather.view.BurnRoundView;
-import com.tokyonth.weather.view.EnglishTextView;
-import com.tokyonth.weather.utils.api.RetrofitFactory;
+import com.tokyonth.weather.api.Api;
+import com.tokyonth.weather.widget.view.EnglishTextView;
+import com.tokyonth.weather.api.RetrofitFactory;
 import com.tokyonth.weather.helper.WeatherInfoHelper;
 
 import org.litepal.LitePal;
@@ -88,12 +83,12 @@ public class CityManagementAdapter extends RecyclerView.Adapter<CityManagementAd
         if (position == 0) {
             DefaultCity defaultCity = LitePal.find(DefaultCity.class, 1);
             if (defaultCity != null) {
-                int temp = (int) SPUtils.getData(Constant.DEFAULT_CITY_TEMP, 0);
-                int img = (int) SPUtils.getData(Constant.DEFAULT_CITY_IMG, 0);
+                int temp = (int) SPUtils.getData(Constants.DEFAULT_CITY_TEMP, 0);
+                int img = (int) SPUtils.getData(Constants.DEFAULT_CITY_IMG, 0);
                 int weatherImagePath = WeatherInfoHelper.getWeatherImagePath(String.valueOf(img));
-                String quality = (String) SPUtils.getData(Constant.DEFAULT_CITY_QUALITY, "");
-                String lowTemp = (String) SPUtils.getData(Constant.DEFAULT_CITY_LOW_TEMP, "");
-                String highTemp = (String) SPUtils.getData(Constant.DEFAULT_CITY_HIGH_TEMP, "");
+                String quality = (String) SPUtils.getData(Constants.DEFAULT_CITY_QUALITY, "");
+                String lowTemp = (String) SPUtils.getData(Constants.DEFAULT_CITY_LOW_TEMP, "");
+                String highTemp = (String) SPUtils.getData(Constants.DEFAULT_CITY_HIGH_TEMP, "");
 
                 holder.ivLocal.setVisibility(View.VISIBLE);
                 holder.cityName.setText(defaultCity.getCityName());
@@ -101,7 +96,7 @@ public class CityManagementAdapter extends RecyclerView.Adapter<CityManagementAd
                 holder.weatherImageIv.setImageResource(weatherImagePath);
                 holder.airTemp.setText("空气" + quality + "\t" + lowTemp + "/" + highTemp);
 
-                Constant.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(String.valueOf(img));
+                Constants.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(String.valueOf(img));
                 holder.dynamicWeatherView.setDrawerType(WeatherTypeHelper.getType(true, weatherType));
                 holder.dynamicWeatherView.onResume();
             }
@@ -113,7 +108,7 @@ public class CityManagementAdapter extends RecyclerView.Adapter<CityManagementAd
                     holder.tempTv.setText(info.getTemp() + context.getString(R.string.celsius));
                     int weatherImagePath = WeatherInfoHelper.getWeatherImagePath(info.getImg());
                     holder.weatherImageIv.setImageResource(weatherImagePath);
-                    Constant.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(info.getImg());
+                    Constants.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(info.getImg());
                     holder.dynamicWeatherView.setDrawerType(WeatherTypeHelper.getType(info.isInTime(), weatherType));
                     holder.dynamicWeatherView.onResume();
                 }
@@ -136,7 +131,7 @@ public class CityManagementAdapter extends RecyclerView.Adapter<CityManagementAd
 
     public void setWeatherBackground(Weather weather) {
         List<Integer> list = WeatherInfoHelper.getSunriseSunset(weather);
-        Constant.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(weather.getInfo().getImg());
+        Constants.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(weather.getInfo().getImg());
         boolean isInTime = DateUtil.isCurrentInTimeScope(list.get(0), list.get(1), list.get(2), list.get(3));
         if (weatherType != null) {
             new CityWeatherInfo(weather.getInfo().getCityName(), weather.getInfo().getTemp(), weather.getInfo().getImg(), isInTime).save();

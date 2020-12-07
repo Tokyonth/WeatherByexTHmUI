@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
-import com.tokyonth.weather.Constant;
-import com.tokyonth.weather.helper.notification.NotificationWeather;
+import com.tokyonth.weather.Constants;
+import com.tokyonth.weather.notification.NotificationWeather;
 import com.tokyonth.weather.utils.SPUtils;
 import com.tokyonth.weather.utils.FileUtil;
 
@@ -22,11 +22,11 @@ public class BaseApplication extends Application {
         LitePal.initialize(this);
         context = getApplicationContext();
 
-        SPUtils.getInstance(context, Constant.SP_FILE_NAME);
-        if (!FileUtil.isFile(Constant.SAVE_WEATHER_NAME)) {
-            FileUtil.saveFile("", Constant.SAVE_WEATHER_NAME);
+        SPUtils.getInstance(context, Constants.SP_FILE_NAME);
+        if (!FileUtil.isFile(Constants.SAVE_WEATHER_NAME)) {
+            FileUtil.saveFile("", Constants.SAVE_WEATHER_NAME);
         }
-        boolean isOpen = (boolean) SPUtils.getData(Constant.SP_NOTIFICATION_WEATHER_KEY, false);
+        boolean isOpen = (boolean) SPUtils.getData(Constants.SP_NOTIFICATION_WEATHER_KEY, false);
         new NotificationWeather(context, isOpen);
     }
 

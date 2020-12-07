@@ -39,6 +39,10 @@
             app:title="@string/pf_choice_picture"
             app:icon="@drawable/ic_all_inbox_24px"/>
 
+        <Preference
+            app:key="pf_blur"
+            app:title="模糊卡片背景" />
+
         <SwitchPreferenceCompat
             app:key="pf_use_blur"
             app:title="@string/pf_use_blur"

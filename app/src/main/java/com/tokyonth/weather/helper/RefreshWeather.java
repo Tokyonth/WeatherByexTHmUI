@@ -1,11 +1,9 @@
 package com.tokyonth.weather.helper;
 
-import android.util.Log;
-
 import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.presenter.WeatherView;
-import com.tokyonth.weather.utils.api.RetrofitFactory;
-import com.tokyonth.weather.utils.api.Api;
+import com.tokyonth.weather.api.RetrofitFactory;
+import com.tokyonth.weather.api.Api;
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -65,7 +63,6 @@ public class RefreshWeather {
 
                         @Override
                         public void onError(Throwable e) {
-                            Log.e("错误", "-->" + e + city);
                             weatherView.showError(e.toString());
                         }
 

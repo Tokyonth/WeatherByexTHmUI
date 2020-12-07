@@ -1,29 +1,10 @@
 package com.tokyonth.weather.blur;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.view.View;
-
-import androidx.core.graphics.drawable.RoundedBitmapDrawable;
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
 public class Blur {
 
-    /**
-     * 此类为高斯模糊图像处理类
-     *
-     * @author GaoChrishao
-     * @Version 1.1
-     */
-    public static Map<Object, Bitmap> bkgMaps = new HashMap<>();
     public static double brightness = 0.1;
 
     /**
@@ -235,68 +216,6 @@ public class Blur {
         return setBitmapBrightness(bitmap, brightness);
     }
 
-    /**
-     * 更具layout的位置以及大小，从已经模糊处理过的图片中截取所需要的部分
-     *
-     */
-    public static void cutBlurBitmap(View fromView, View toView, int radius, float scaleFactor, float roundCorner) {
-        // 获取View的截图
-        if (radius < 1 || radius > 26) {
-            scaleFactor = 8;
-            radius = 2;
-        }
-        if (bkgMaps.get(fromView) == null) {
-            initBkg(fromView, radius, scaleFactor);
-        }
-        int top, left;
-        int[] location = new int[2];
-        toView.getLocationInWindow(location);
-        left = location[0];
-        top = location[1];
-        if (toView.getWidth() > 0 && toView.getHeight() > 0) {
-            Bitmap overlay = Bitmap.createBitmap((int) (toView.getWidth() / scaleFactor), (int) (toView.getHeight() / scaleFactor), Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(overlay);
-            canvas.translate(-left / scaleFactor, -top / scaleFactor);
-            canvas.scale(1 / scaleFactor, 1 / scaleFactor);
-            Paint paint = new Paint();
-            paint.setFlags(Paint.FILTER_BITMAP_FLAG);
-            canvas.drawBitmap(Objects.requireNonNull(bkgMaps.get(fromView)), 0, 0, paint);
-            RoundedBitmapDrawable bdr = RoundedBitmapDrawableFactory.create(Resources.getSystem(), overlay);
-            bdr.setCornerRadius(roundCorner);
-            toView.setBackground(bdr);
-        }
-
-
-    }
-
-    /**
-     * 初始化，将原始图片处理成模糊后的图片
-     */
-    static void initBkg(View fromView, int radius, float scaleFactor) {
-        BitmapDrawable bd = (BitmapDrawable) fromView.getBackground();
-        Bitmap bkg1 = bd.getBitmap();
-        fromView.destroyDrawingCache();
-        fromView.setDrawingCacheEnabled(true);
-        int height = (int) (fromView.getDrawingCache().getHeight());  //屏幕高度
-        int width = (int) (fromView.getDrawingCache().getWidth());    //屏幕宽度
-
-        //精确缩放到指定大小
-        Bitmap bitmapOrigin = Bitmap.createScaledBitmap(bkg1, (int) (width / scaleFactor), (int) (height / scaleFactor), true);
-        bitmapOrigin.setConfig(Bitmap.Config.ARGB_8888);
-        Bitmap src = blurBitmap(bitmapOrigin, radius, true);
-        if (src != null) {
-            Bitmap bkg = Bitmap.createScaledBitmap(src, width, height, true);
-            bkgMaps.put(fromView, bkg);
-        }
-    }
-
-    public static void initBkgWithResize(View fromView, Bitmap bitmap, int width, int height) {
-        if (bitmap != null) {
-            Bitmap bkg = Bitmap.createScaledBitmap(bitmap, width, height, true);
-            bkgMaps.put(fromView, bkg);
-        }
-    }
-
     //调节亮度
     public static Bitmap setBitmapBrightness(Bitmap bitmap, double depth) {
         Bitmap bm = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
@@ -334,63 +253,6 @@ public class Blur {
             }
         }
         return bm;
-    }
-
-
-    /**
-     * 此类为控件模糊处理类
-     */
-    public static class BlurLayout {
-
-        private int positionX, positionY;
-        //毛玻璃效果参数,可以动态修改
-        private int RoundCorner = 50;
-        private int radius = 10;
-        private int scaleFactor = 26;
-
-        public BlurLayout(final View layoutView, final View layoutBkg) {
-            positionX = positionY = 0;
-            layoutView.getViewTreeObserver().addOnPreDrawListener(() -> {
-                int[] position = new int[2];
-                layoutView.getLocationInWindow(position);
-                if (positionX != position[0] || positionY != position[1]) {
-                    Blur.cutBlurBitmap(layoutBkg, layoutView, radius, scaleFactor, RoundCorner);
-                    positionX = position[0];
-                    positionY = position[1];
-                }
-                return true;
-            });
-        }
-
-        public void setRoundCorner(int roundCorner) {
-            RoundCorner = roundCorner;
-        }
-
-        public void setRadius(int radius) {
-            this.radius = radius;
-        }
-
-        public void setScaleFactor(int scaleFactor) {
-            this.scaleFactor = scaleFactor;
-        }
-
-        public void reSetPositions() {
-            positionX = 0;
-            positionY = 0;
-        }
-    }
-
-    //此函数为全局亮度调节，必须在最开始调用个，后期调用可能会造成亮度不统一
-    public static void setBrightness(double newBrightness) {
-        if (newBrightness > -1 || newBrightness < 1) {
-            brightness = newBrightness;
-        }
-    }
-
-    public static void destroy(View fromView) {
-        if (bkgMaps.get(fromView) != null) {
-            bkgMaps.remove(fromView);
-        }
     }
 
 }

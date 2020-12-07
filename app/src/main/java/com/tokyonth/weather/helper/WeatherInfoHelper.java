@@ -3,7 +3,7 @@ package com.tokyonth.weather.helper;
 import android.content.res.Resources;
 import android.graphics.Color;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.base.BaseApplication;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.model.bean.Weather;
@@ -170,24 +170,24 @@ public class WeatherInfoHelper {
     }
 
 
-    public static Constant.WEATHER_TYPE getWeatherType(String img) {
-        Constant.WEATHER_TYPE weatherType = null;
+    public static Constants.WEATHER_TYPE getWeatherType(String img) {
+        Constants.WEATHER_TYPE weatherType = null;
         if (!img.isEmpty()) {
             int imgCode = Integer.parseInt(img);
             if (imgCode == 0) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_SUNNY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_SUNNY;
             } else if (imgCode == 1 || imgCode == 2) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_CLOUDY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_CLOUDY;
             } else if (imgCode >= 3 && imgCode <= 12 || imgCode == 19 || imgCode >= 21 && imgCode <= 25 || imgCode == 301) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_RAINY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_RAINY;
             } else if (imgCode >= 13 && imgCode <= 17 || imgCode >= 26 && imgCode <= 28 || imgCode == 302) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_SNOWY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_SNOWY;
             } else if (imgCode == 18 || imgCode == 32 || imgCode == 49 || imgCode == 57 || imgCode == 58) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_FOGGY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_FOGGY;
             } else if (imgCode == 20 || imgCode == 29 || imgCode == 30 || imgCode == 31) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_SANDY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_SANDY;
             } else if (imgCode >= 53 && imgCode <= 56) {
-                weatherType = Constant.WEATHER_TYPE.WEATHER_TYPE_HAZY;
+                weatherType = Constants.WEATHER_TYPE.WEATHER_TYPE_HAZY;
             }
             return weatherType;
         }

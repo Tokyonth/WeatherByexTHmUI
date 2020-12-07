@@ -1,11 +1,11 @@
 package com.tokyonth.weather.helper;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.dynamic.BaseDrawer;
 
 public class WeatherTypeHelper {
 
-    public static BaseDrawer.Type getType(boolean isDay, Constant.WEATHER_TYPE weatherType) {
+    public static BaseDrawer.Type getType(boolean isDay, Constants.WEATHER_TYPE weatherType) {
         BaseDrawer.Type DrawerType;
         switch (weatherType) {
             case WEATHER_TYPE_SUNNY:

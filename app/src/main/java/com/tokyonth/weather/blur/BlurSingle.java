@@ -7,34 +7,77 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 import androidx.core.graphics.drawable.RoundedBitmapDrawable;
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.utils.DisplayUtils;
 import com.tokyonth.weather.utils.SPUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BlurSingle extends Blur {
 
     protected static Bitmap blurBkg;
-    /**
-     * 更具layout的位置以及大小，从已经模糊处理过的图片中截取所需要的部分
-     */
+    private boolean stopBlur = false;
+    private int positionX, positionY;
+    private int roundCorner = 32;
+    private int radius = 8;
+    private int scaleFactor = 26;
 
-    public static void cutBlurBitmap(View toView, int radius, float scaleFactor, float roundCorner) {
-        // 获取View的截图
+    private HashMap<View, ViewTreeObserver.OnPreDrawListener> viewOnPreDrawListenerHashMap;
+
+    public void blurView(View... layoutView) {
+        viewOnPreDrawListenerHashMap = new HashMap<>();
+        positionX = positionY = 0;
+        for (View view : layoutView) {
+            ViewTreeObserver.OnPreDrawListener listener = blurViewTreeObserver(view);
+            viewOnPreDrawListenerHashMap.put(view, listener);
+        }
+    }
+
+    private ViewTreeObserver.OnPreDrawListener blurViewTreeObserver(View view) {
+        ViewTreeObserver.OnPreDrawListener listener = () -> {
+            int[] position = new int[2];
+            view.getLocationInWindow(position);
+            if (positionX != position[0] || positionY != position[1]) {
+                cutBlurBitmap(view, radius, scaleFactor, roundCorner);
+                positionX = position[0];
+                positionY = position[1];
+            }
+            return true;
+        };
+        view.getViewTreeObserver().addOnPreDrawListener(listener);
+        return listener;
+    }
+
+    public void stopBlur() {
+        if (viewOnPreDrawListenerHashMap != null) {
+            stopBlur = true;
+            for (Map.Entry<View, ViewTreeObserver.OnPreDrawListener> entry : viewOnPreDrawListenerHashMap.entrySet()) {
+                entry.getKey().getViewTreeObserver().removeOnPreDrawListener(entry.getValue());
+            }
+        }
+    }
+
+    /**
+     * 根据layout的位置以及大小，从已经模糊处理过的图片中截取所需要的部分
+     */
+    private void cutBlurBitmap(View toView, int radius, float scaleFactor, float roundCorner) {
+        if (stopBlur)
+            return;
         if (radius < 1 || radius > 26) {
             scaleFactor = 8;
             radius = 2;
         }
         if (blurBkg == null) {
-            initBkg(toView.getContext(), radius, scaleFactor);
+            initImage(toView.getContext(), radius, scaleFactor);
         }
         int top, left;
         int[] location = new int[2];
@@ -53,15 +96,14 @@ public class BlurSingle extends Blur {
             bdr.setCornerRadius(roundCorner);
             toView.setBackground(bdr);
         }
-
     }
 
     /**
      * 初始化，将原始图片处理成模糊后的图片
      */
-    public static void initBkg(Context context, int radius, float scaleFactor) {
+    public void initImage(Context context, int radius, float scaleFactor) {
         Bitmap bitmap;
-        String path = (String) SPUtils.getData(Constant.SP_PICTURE_PATH_KEY, "");
+        String path = (String) SPUtils.getData(Constants.SP_PICTURE_PATH_KEY, "");
         if (!path.equals("")) {
             FileInputStream fileInputStream = null;
             try {
@@ -85,76 +127,26 @@ public class BlurSingle extends Blur {
         }
     }
 
-    public static void initBkgWithResize(Bitmap bitmap, int width, int height) {
-        if (bitmap != null) {
-            blurBkg = Bitmap.createScaledBitmap(bitmap, width, height, true);
-        }
+    public void setRoundCorner(int roundCorner) {
+        this.roundCorner = roundCorner;
     }
 
-    public static void destroy(View fromView) {
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
+    public void setScaleFactor(int scaleFactor) {
+        this.scaleFactor = scaleFactor;
+    }
+
+    public void reSetPositions() {
+        positionX = 0;
+        positionY = 0;
+    }
+
+    public void changeImage() {
         if (blurBkg != null) {
             blurBkg = null;
-        }
-    }
-
-    /**
-     * 此类为控件模糊处理类
-     */
-    public static class BlurLayout {
-
-        private int positionX, positionY;
-        //毛玻璃效果参数,可以动态修改
-        public static int RoundCorner = 32;
-        public static int radius = 5;
-        public static int scaleFactor = 26;
-
-        public BlurLayout(final View layoutView) {
-            positionX = positionY = 0;
-            layoutView.getViewTreeObserver().addOnPreDrawListener(() -> {
-                int[] position = new int[2];
-                layoutView.getLocationInWindow(position);
-                if (positionX != position[0] || positionY != position[1]) {
-                    BlurSingle.cutBlurBitmap(layoutView, radius, scaleFactor, RoundCorner);
-                    positionX = position[0];
-                    positionY = position[1];
-                }
-                return true;
-            });
-        }
-
-        public BlurLayout(final List<View> layoutView) {
-            positionX = positionY = 0;
-
-            for (View view : layoutView) {
-                view.getViewTreeObserver().addOnPreDrawListener(() -> {
-                    int[] position = new int[2];
-                    view.getLocationInWindow(position);
-                    if (positionX != position[0] || positionY != position[1]) {
-                        BlurSingle.cutBlurBitmap(view, radius, scaleFactor, RoundCorner);
-                        positionX = position[0];
-                        positionY = position[1];
-                    }
-                    return true;
-                });
-            }
-
-        }
-
-        public void setRoundCorner(int roundCorner) {
-            RoundCorner = roundCorner;
-        }
-
-        public void setRadius(int radius) {
-            BlurLayout.radius = radius;
-        }
-
-        public void setScaleFactor(int scaleFactor) {
-            BlurLayout.scaleFactor = scaleFactor;
-        }
-
-        public void reSetPositions() {
-            positionX = 0;
-            positionY = 0;
         }
     }
 

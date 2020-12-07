@@ -11,18 +11,18 @@
         android:id="@+id/widget_small_image_iv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:padding="12dp"
         android:layout_weight="1"
-        tools:src="@drawable/weather_cloudy"
-        app:tint="@android:color/white" />
+        android:padding="12dp"
+        app:tint="@android:color/white"
+        tools:src="@drawable/weather_cloudy" />
 
     <TextView
         android:id="@+id/widget_small_text_tv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="16sp"
         android:textColor="@android:color/white"
+        android:textSize="16sp"
         tools:text="26" />
 
 </LinearLayout>

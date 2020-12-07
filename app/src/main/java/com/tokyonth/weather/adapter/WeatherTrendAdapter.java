@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.model.bean.WeatherBean;
-import com.tokyonth.weather.view.custom.VerticalProgressBar;
 
 import java.util.List;
 
@@ -55,7 +54,6 @@ public class WeatherTrendAdapter extends RecyclerView.Adapter<WeatherTrendAdapte
     @Override
     public void onBindViewHolder(@NonNull WeatherTrendHolder holder, int position) {
         WeatherBean bean = weatherBean.get(position);
-        holder.progressBar.setProgress(Integer.parseInt(bean.temperature));
         holder.weather.setText(bean.weather);
         holder.time.setText(bean.time);
         holder.temp.setText(bean.temperatureStr);
@@ -71,7 +69,6 @@ public class WeatherTrendAdapter extends RecyclerView.Adapter<WeatherTrendAdapte
 
         private TextView temp, time, weather;
         private ImageView imageView;
-        private VerticalProgressBar progressBar;
 
         WeatherTrendHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,9 +76,6 @@ public class WeatherTrendAdapter extends RecyclerView.Adapter<WeatherTrendAdapte
             time = itemView.findViewById(R.id.weather_trend_item_tv_time);
             imageView = itemView.findViewById(R.id.weather_trend_item_iv_info);
             weather = itemView.findViewById(R.id.weather_trend_item_tv_weather);
-            progressBar = itemView.findViewById(R.id.weather_trend_item_progressbar);
-
-            progressBar.setVisibility(View.GONE);
         }
     }
 

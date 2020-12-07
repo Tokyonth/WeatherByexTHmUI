@@ -35,7 +35,7 @@ public class WarningActivity extends BaseActivity {
     }
 
     private void initView() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null){
@@ -44,7 +44,7 @@ public class WarningActivity extends BaseActivity {
         }
         setTitle(getString(R.string.act_title_warning));
 
-        RecyclerView mWarningRv = findViewById(R.id.warning_rv);
+        RecyclerView mWarningRv = findViewById(R.id.rv_warning);
         WarningAdapter mWarningAdapter = new WarningAdapter(this);
         mWarningRv.setLayoutManager(new LinearLayoutManager(this));
         mWarningRv.setAdapter(mWarningAdapter);

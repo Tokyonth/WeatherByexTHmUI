@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.model.bean.City;
-import com.tokyonth.weather.view.search.IOnItemClickListener;
+import com.tokyonth.weather.widget.search.IOnItemClickListener;
 
 import org.litepal.LitePal;
 

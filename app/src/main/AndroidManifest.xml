@@ -21,14 +21,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:requestLegacyExternalStorage="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup"
         tools:targetApi="q">
-
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -64,7 +63,7 @@
             android:value="c8db2524c8687ebd2919d7942e9f8409" />
         <service android:name="com.amap.api.location.APSService" />
         <service
-            android:name=".helper.service.WeatherTileService"
+            android:name=".service.WeatherTileService"
             android:icon="@drawable/tile_icon"
             android:label="@string/app_name"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -73,7 +72,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".helper.receiver.WeatherSmallReceiver">
+        <receiver android:name=".receiver.WeatherSmallReceiver">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_small" />
@@ -82,7 +81,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".helper.receiver.WeatherMiddleReceiver">
+        <receiver android:name=".receiver.WeatherMiddleReceiver">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_middle" />
@@ -91,7 +90,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".helper.receiver.WeatherLargeReceiver">
+        <receiver android:name=".receiver.WeatherLargeReceiver">
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_large" />

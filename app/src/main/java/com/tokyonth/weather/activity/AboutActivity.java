@@ -68,11 +68,10 @@ public class AboutActivity extends BaseActivity {
                 finish();
                 break;
             case R.id.action_about_shard:
-                String path = getPackageResourcePath();
-                File apkFile = new File(path);
+                File apkFile = new File(getPackageResourcePath());
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_SEND);
-                intent.setType("*/*");
+                intent.setType("file/*");
                 intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(apkFile));
                 startActivity(intent);
                 break;

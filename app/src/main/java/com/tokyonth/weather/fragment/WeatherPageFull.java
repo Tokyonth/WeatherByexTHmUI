@@ -10,27 +10,25 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.adapter.IndexAdapter;
 import com.tokyonth.weather.adapter.WeatherTrendAdapter;
 import com.tokyonth.weather.base.BaseFragment;
 import com.tokyonth.weather.blur.BlurSingle;
+import com.tokyonth.weather.model.bean.BlurEvent;
 import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.model.bean.WeatherBean;
 import com.tokyonth.weather.helper.WeatherInfoHelper;
 
 import com.tokyonth.weather.model.bean.entity.Hourly;
 import com.tokyonth.weather.utils.SPUtils;
-import com.tokyonth.weather.view.SunriseSunset.formatter.SunriseSunsetLabelFormatter;
-import com.tokyonth.weather.view.SunriseSunset.model.Time;
-import com.tokyonth.weather.view.SunriseSunset.SunriseSunsetView;
-import com.tokyonth.weather.view.EnglishTextView;
-import com.tokyonth.weather.view.custom.SemicircleProgressView;
-import com.tokyonth.weather.view.custom.Windmill;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+import com.tokyonth.weather.widget.view.SunriseSunset.formatter.SunriseSunsetLabelFormatter;
+import com.tokyonth.weather.widget.view.SunriseSunset.model.Time;
+import com.tokyonth.weather.widget.view.SunriseSunset.SunriseSunsetView;
+import com.tokyonth.weather.widget.view.EnglishTextView;
+import com.tokyonth.weather.widget.SemicircleProgressView;
+import com.tokyonth.weather.widget.Windmill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +47,8 @@ public class WeatherPageFull extends BaseFragment {
     private Windmill windmill_big, windmill_small;
     private SemicircleProgressView semicircle_progress_view;
 
-    private View blur0, blur1, blur2,blur3;
+    private BlurSingle blurSingle;
+    private List<View> blurViewList;
 
     @Override
     protected int getLayoutId() {
@@ -58,10 +57,6 @@ public class WeatherPageFull extends BaseFragment {
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        blur0 = view.findViewById(R.id.content_weather_msg);
-        blur1 = view.findViewById(R.id.ll_ssv);
-        blur2 = view.findViewById(R.id.pager_aqi_weather);
-        blur3 = view.findViewById(R.id.pager_index_weather);
         tv_level = view.findViewById(R.id.aqi_quality_level_tv);
         tv_primary_pollute = view.findViewById(R.id.aqi_primary_pollute_tv);
         tv_affect = view.findViewById(R.id.aqi_affect_tv);
@@ -101,33 +96,21 @@ public class WeatherPageFull extends BaseFragment {
                 return String.format(Locale.getDefault(), "%02d:%02d", time.hour, time.minute);
             }
         });
-
+        blurViewList = new ArrayList<>();
+        blurViewList.add(rv_weather_trend);
+        blurViewList.add(view.findViewById(R.id.content_weather_msg));
+        blurViewList.add(view.findViewById(R.id.ll_ssv));
+        blurViewList.add(view.findViewById(R.id.pager_aqi_weather));
+        blurViewList.add(view.findViewById(R.id.pager_index_weather));
     }
 
     @Override
     protected void initData() {
-        if ((boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false) &&
-                (boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false)) {
-            setBlur();
+        blurSingle = new BlurSingle();
+        if ((boolean) SPUtils.getData(Constants.SP_USE_PICTURE_BACKGROUND_KEY, false) &&
+                (boolean) SPUtils.getData(Constants.SP_USE_BLUR_KEY, false)) {
+            blurSingle.blurView(blurViewList.get(0), blurViewList.get(1), blurViewList.get(2), blurViewList.get(3), blurViewList.get(4));
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN, sticky = true)
-    public void receiveMsg(String insType) {
-        if ("blurImageChange".equals(insType)) {
-            setBlur();
-        }
-    }
-
-    private void setBlur(){
-        List<View> list = new ArrayList<>();
-        list.add(blur0);
-        list.add(blur1);
-        list.add(blur2);
-        list.add(rv_weather_trend);
-        list.add(blur3);
-        new BlurSingle.BlurLayout(list).setRadius(8);
-        BlurSingle.initBkg(getContext(), 8, 32);
     }
 
     @SuppressLint("SetTextI18n")
@@ -209,6 +192,22 @@ public class WeatherPageFull extends BaseFragment {
 
         windmill_big.setWindSpeed(wind_speed);
         windmill_small.setWindSpeed(wind_speed);
+    }
+
+    @Override
+    protected void setBlurConfig(BlurEvent blurEvent) {
+        if (blurEvent.isBlur()) {
+            blurSingle.setRadius(blurEvent.getRadius());
+            blurSingle.setRoundCorner(blurEvent.getRoundCorner());
+            blurSingle.setScaleFactor(blurEvent.getScaleFactor());
+            blurSingle.blurView(blurViewList.get(0), blurViewList.get(1), blurViewList.get(2), blurViewList.get(3), blurViewList.get(4));
+        } else {
+            blurSingle.stopBlur();
+            int drawableRes = R.drawable.frame_reveal_weather_msg;
+            for (View view : blurViewList) {
+                view.setBackgroundResource(drawableRes);
+            }
+        }
     }
 
     @Override

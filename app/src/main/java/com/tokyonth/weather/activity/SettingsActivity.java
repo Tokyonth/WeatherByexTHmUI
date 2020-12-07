@@ -1,6 +1,7 @@
 package com.tokyonth.weather.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
@@ -9,6 +10,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.tokyonth.weather.base.BaseActivity;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.fragment.SettingsFragment;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 public class SettingsActivity extends BaseActivity {
 

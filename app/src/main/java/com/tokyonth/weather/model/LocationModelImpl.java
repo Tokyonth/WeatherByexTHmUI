@@ -6,7 +6,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.model.bean.DefaultCity;
 import com.tokyonth.weather.utils.FileUtil;
 
@@ -82,7 +82,7 @@ public class LocationModelImpl implements LocationModel {
 
                 String precise_location = aMapLocation.getAddress().substring(aMapLocation.getAddress().indexOf(aMapLocation.getDistrict())
                         + aMapLocation.getDistrict().length(), aMapLocation.getAddress().lastIndexOf(""));
-                FileUtil.saveFile(precise_location, Constant.PRECISE_LOCATION_NAME);
+                FileUtil.saveFile(precise_location, Constants.PRECISE_LOCATION_NAME);
                 locationMonitor.Success();
             } else {
                 stopLocation();

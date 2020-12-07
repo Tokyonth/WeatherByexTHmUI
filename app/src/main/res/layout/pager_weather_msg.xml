@@ -23,7 +23,7 @@
             android:layout_width="120dp"
             android:layout_height="match_parent">
 
-            <com.tokyonth.weather.view.custom.Windmill
+            <com.tokyonth.weather.widget.Windmill
                 android:id="@+id/windmill_big"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -31,7 +31,7 @@
                 app:windLengthParent="0.35"
                 app:windmillColors="@android:color/white" />
 
-            <com.tokyonth.weather.view.custom.Windmill
+            <com.tokyonth.weather.widget.Windmill
                 android:id="@+id/windmill_small"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -89,7 +89,7 @@
                 android:src="@drawable/icon_humidity"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.view.EnglishTextView
+            <com.tokyonth.weather.widget.view.EnglishTextView
                 android:id="@+id/weather_humidity_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                 android:src="@drawable/ic_pressure"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.view.EnglishTextView
+            <com.tokyonth.weather.widget.view.EnglishTextView
                 android:id="@+id/weather_pressure_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -141,7 +141,7 @@
                 android:src="@drawable/ic_wind_speed"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.view.EnglishTextView
+            <com.tokyonth.weather.widget.view.EnglishTextView
                 android:id="@+id/weather_wind_speed_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
                 android:src="@drawable/icon_sun"
                 app:tint="@android:color/white" />
 
-            <com.tokyonth.weather.view.EnglishTextView
+            <com.tokyonth.weather.widget.view.EnglishTextView
                 android:id="@+id/weather_forecast_day_tips_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

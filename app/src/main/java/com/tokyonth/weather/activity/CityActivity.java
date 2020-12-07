@@ -1,55 +1,41 @@
 package com.tokyonth.weather.activity;
 
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
-import android.app.SharedElementCallback;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.view.menu.MenuPopupHelper;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.transition.ChangeBounds;
-import android.transition.Explode;
-import android.transition.Fade;
-import android.util.Log;
-import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.ImageView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.tokyonth.weather.base.BaseActivity;
 import com.tokyonth.weather.R;
 import com.tokyonth.weather.adapter.CityManagementAdapter;
-import com.tokyonth.weather.dynamic.DynamicWeatherView;
 import com.tokyonth.weather.model.bean.City;
 import com.tokyonth.weather.model.bean.DefaultCity;
 import com.tokyonth.weather.model.bean.SavedCity;
-import com.tokyonth.weather.view.search.SearchFragment;
+import com.tokyonth.weather.widget.search.SearchFragment;
 
 import com.google.android.material.snackbar.Snackbar;
+
 import org.greenrobot.eventbus.EventBus;
 import org.litepal.LitePal;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 public class CityActivity extends BaseActivity {
 
     private CityManagementAdapter cityAdapter;
-    private List<SavedCity> saved_city_list;
-    private Bundle bundle;
+    private List<SavedCity> savedCityList;
 
-    public static final String IMAGE_TRANSITION_NAME = "transitionImage";
+    private FloatingActionButton fabAddCity;
 
     @Override
     public int setActivityView() {
@@ -58,7 +44,7 @@ public class CityActivity extends BaseActivity {
 
     @Override
     public void initActivity(Bundle savedInstanceState) {
-        saved_city_list = LitePal.findAll(SavedCity.class);
+        savedCityList = LitePal.findAll(SavedCity.class);
         initView();
     }
 
@@ -82,7 +68,14 @@ public class CityActivity extends BaseActivity {
         }
         setTitle(getString(R.string.act_title_select_city));
 
-        findViewById(R.id.fab).setOnClickListener(v -> {
+        fabAddCity = findViewById(R.id.fab_add_city);
+        fabAddCity.setOnClickListener(v -> {
+           /* ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
+                    new TransitionAnimationPair(fabAddCity, "SearchActivity"));
+            Router.newIntent(this)
+                    .options(options)
+                    .to(SearchCityActivity.class)
+                    .launch();*/
             SearchFragment searchFragment = SearchFragment.newInstance();
             searchFragment.showFragment(getSupportFragmentManager(), SearchFragment.TAG);
             searchFragment.setCitySelect(city -> {
@@ -91,7 +84,7 @@ public class CityActivity extends BaseActivity {
                         DefaultCity defaultCity = new DefaultCity(city.getCityName(),
                                 city.getParentId(), null, null);
                         defaultCity.save();
-                        saved_city_list.add(new SavedCity(city.getCityId(), city.getParentId(), city.getCityCode(), city.getCityName()));
+                        savedCityList.add(new SavedCity(city.getCityId(), city.getParentId(), city.getCityCode(), city.getCityName()));
                         cityAdapter.notifyItemChanged(0);
                     } else {
                         saveCity(city);
@@ -103,17 +96,14 @@ public class CityActivity extends BaseActivity {
             });
         });
 
-        RecyclerView cityRv = findViewById(R.id.city_management_rv);
-
-        //ViewCompat.setTransitionName(cityRv, IMAGE_TRANSITION_NAME);
-
-        cityAdapter = new CityManagementAdapter(this, saved_city_list);
+        RecyclerView rvCity = findViewById(R.id.city_management_rv);
+        cityAdapter = new CityManagementAdapter(this, savedCityList);
         cityAdapter.setOnItemClickListener((view, position) -> {
             DefaultCity defaultCity = LitePal.find(DefaultCity.class, 1);
             if (position == 0 && defaultCity != null) {
                 EventBus.getDefault().post(defaultCity);
             } else {
-                SavedCity savedCity = saved_city_list.get(position - 1);
+                SavedCity savedCity = savedCityList.get(position - 1);
                 EventBus.getDefault().post(savedCity);
             }
             finish();
@@ -127,8 +117,8 @@ public class CityActivity extends BaseActivity {
         });
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 1);
-        cityRv.setLayoutManager(gridLayoutManager);
-        cityRv.setAdapter(cityAdapter);
+        rvCity.setLayoutManager(gridLayoutManager);
+        rvCity.setAdapter(cityAdapter);
     }
 
     private void saveCity(City city) {
@@ -137,8 +127,8 @@ public class CityActivity extends BaseActivity {
             if (!compareTwoCities(savedCity)) {
                 savedCity.save();
                 Snackbar.make(findViewById(R.id.city_management_con), getString(R.string.add_city_success), Snackbar.LENGTH_LONG).show();
-                saved_city_list.add(savedCity);
-                cityAdapter.notifyItemChanged(saved_city_list.size());
+                savedCityList.add(savedCity);
+                cityAdapter.notifyItemChanged(savedCityList.size());
             } else {
                 Snackbar.make(findViewById(R.id.city_management_con), getString(R.string.city_already_exist), Snackbar.LENGTH_LONG).show();
             }
@@ -172,8 +162,8 @@ public class CityActivity extends BaseActivity {
         popupMenu.show();
         popupMenu.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == R.id.city_management_popup_menu_delete) {
-                saved_city_list.get(position - 1).delete();
-                saved_city_list.remove(position - 1);
+                savedCityList.get(position - 1).delete();
+                savedCityList.remove(position - 1);
                 cityAdapter.notifyAdapterItemRemoved(position);
                 Snackbar.make(findViewById(R.id.city_management_con), getString(R.string.city_del_city), Snackbar.LENGTH_SHORT).show();
             }
@@ -183,20 +173,20 @@ public class CityActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        cityAdapter.stopAll();
+      //  cityAdapter.stopAll();
         finish();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        cityAdapter.startAll();
+      //  cityAdapter.startAll();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        cityAdapter.stopAll();
+       // cityAdapter.stopAll();
     }
 
     @Override

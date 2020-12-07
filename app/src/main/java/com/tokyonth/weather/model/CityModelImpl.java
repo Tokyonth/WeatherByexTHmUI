@@ -1,8 +1,8 @@
 package com.tokyonth.weather.model;
 
 import com.tokyonth.weather.model.bean.CityList;
-import com.tokyonth.weather.utils.api.Api;
-import com.tokyonth.weather.utils.api.RetrofitFactory;
+import com.tokyonth.weather.api.Api;
+import com.tokyonth.weather.api.RetrofitFactory;
 
 import org.litepal.LitePal;
 

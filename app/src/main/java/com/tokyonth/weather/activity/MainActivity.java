@@ -1,6 +1,5 @@
 package com.tokyonth.weather.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,12 +10,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.util.Pair;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -25,31 +19,28 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.tokyonth.weather.adapter.WeatherPagerAdapter;
 import com.tokyonth.weather.base.BaseActivity;
-import com.tokyonth.weather.Constant;
+import com.tokyonth.weather.Constants;
 import com.tokyonth.weather.R;
+import com.tokyonth.weather.helper.RefreshWeather;
 import com.tokyonth.weather.helper.WeatherTypeHelper;
 import com.tokyonth.weather.dynamic.DynamicWeatherView;
-import com.tokyonth.weather.fragment.WeatherPageSimple;
-import com.tokyonth.weather.fragment.WeatherPageFull;
 import com.tokyonth.weather.model.LocationMonitor;
 import com.tokyonth.weather.model.bean.DefaultCity;
+import com.tokyonth.weather.model.bean.ImageBackgroundEvent;
 import com.tokyonth.weather.model.bean.SavedCity;
 import com.tokyonth.weather.model.bean.Weather;
 import com.tokyonth.weather.presenter.LocationPresenterImpl;
 import com.tokyonth.weather.presenter.WeatherPresenter;
 import com.tokyonth.weather.presenter.WeatherPresenterImpl;
-import com.tokyonth.weather.utils.DisplayUtils;
-import com.tokyonth.weather.utils.NetworkUtil;
 import com.tokyonth.weather.utils.DateUtil;
-import com.tokyonth.weather.helper.RefreshWeather;
 import com.tokyonth.weather.helper.WeatherInfoHelper;
 import com.tokyonth.weather.utils.FileUtil;
 import com.tokyonth.weather.presenter.WeatherView;
+import com.tokyonth.weather.utils.NetworkUtil;
 import com.tokyonth.weather.utils.SPUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -65,11 +56,11 @@ public class MainActivity extends BaseActivity implements WeatherView {
     private Weather weatherBean = null;
     private WeatherPresenter weatherPresenter;
     private DynamicWeatherView dynamicWeatherView;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     private TextView tvCityName;
     private ImageView ivDefaultCity;
     private ImageView ivBlurPicture;
-    private ViewPager2 viewPager2;
 
     private boolean isFirst = true;
     private boolean isDefaultCity = true;
@@ -97,19 +88,17 @@ public class MainActivity extends BaseActivity implements WeatherView {
     }
 
     private void startSplashActivity() {
-        if ((boolean) SPUtils.getData(Constant.IMPORT_DATA, true)) {
+        if ((boolean) SPUtils.getData(Constants.IMPORT_DATA, true)) {
             startActivity(new Intent(this, SplashActivity.class));
             finish();
         } else {
             initView();
             initData();
-            initPictureBackground();
-            //initFragmentWeatherPage();
         }
     }
 
     private void initData() {
-        weatherPresenter = new WeatherPresenterImpl(MainActivity.this);
+        weatherPresenter = new WeatherPresenterImpl(this);
         new LocationPresenterImpl().loadLocation(this, new LocationMonitor() {
             @Override
             public void Failure() {
@@ -134,9 +123,9 @@ public class MainActivity extends BaseActivity implements WeatherView {
 
             }
         });
-        String jsonContent = FileUtil.getFile(Constant.SAVE_WEATHER_NAME);
+        String jsonContent = FileUtil.getFile(Constants.SAVE_WEATHER_NAME);
         if (jsonContent != null && !jsonContent.equals("")) {
-            weatherBean = new Gson().fromJson(FileUtil.getFile(Constant.SAVE_WEATHER_NAME), Weather.class);
+            weatherBean = new Gson().fromJson(FileUtil.getFile(Constants.SAVE_WEATHER_NAME), Weather.class);
         }
     }
 
@@ -146,69 +135,37 @@ public class MainActivity extends BaseActivity implements WeatherView {
         setSupportActionBar(toolbar);
         setTitle(null);
 
-        /*TypedValue typedValue = new TypedValue();
-        getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true);
-        int toolBarHeight = TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        int statusBarHeight = getResources().getDimensionPixelSize(resourceId);*/
-
-        /*int resourceId= getResources().getIdentifier("navigation_bar_height","dimen","android");
-        int height = getResources().getDimensionPixelSize(resourceId);
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(DisplayUtils.getScreenWidth(MainActivity.this),
-                DisplayUtils.getScreenHeight(MainActivity.this) + height);
-        findViewById(R.id.frag_simple).setLayoutParams(params);*/
-
         ivDefaultCity = findViewById(R.id.iv_default_city);
         tvCityName = findViewById(R.id.tv_city_name);
         ivBlurPicture = findViewById(R.id.iv_main_pic);
         dynamicWeatherView = findViewById(R.id.dynamic_weather_view);
+        swipeRefreshLayout = findViewById(R.id.sr_refresh_city);
+        swipeRefreshLayout.setOnRefreshListener(this::refreshWeather);
+        swipeRefreshLayout.setOnChildScrollUpCallback((parent, child) -> false);
+        //swipeRefreshLayout.setRefreshing(true);
 
-        viewPager2 = findViewById(R.id.vp2);
+        WeatherPagerAdapter weatherPagerAdapter = new WeatherPagerAdapter(this);
+        ViewPager2 viewPager2 = findViewById(R.id.vp_weather_page);
         viewPager2.setOrientation(ViewPager2.ORIENTATION_VERTICAL);
-        viewPager2.setAdapter(new WeatherPagerAdapter(this));
-        viewPager2.setOffscreenPageLimit(1);
+        viewPager2.setAdapter(weatherPagerAdapter);
+        viewPager2.setOffscreenPageLimit(weatherPagerAdapter.getItemCount());
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-               // boolean is = ;
-               // if (position != 0)
-                  //  swipeRefreshLayout.setEnabled(position == 0);
+                swipeRefreshLayout.setEnabled(position == 0);
             }
         });
     }
 
-
     public void setWeatherBackground(Weather weather) {
         List<Integer> list = WeatherInfoHelper.getSunriseSunset(weather);
-        Constant.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(weather.getInfo().getImg());
+        Constants.WEATHER_TYPE weatherType = WeatherInfoHelper.getWeatherType(weather.getInfo().getImg());
         boolean isInTime = DateUtil.isCurrentInTimeScope(list.get(0), list.get(1), list.get(2), list.get(3));
         if (weatherType != null) {
             dynamicWeatherView.setDrawerType(WeatherTypeHelper.getType(isInTime, weatherType));
         } else {
             Snackbar.make(findViewById(R.id.cdl_weather_basic), getString(R.string.text_dynamic_background_error), Snackbar.LENGTH_LONG).show();
-        }
-    }
-
-
-    private void initPictureBackground() {
-        if ((boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false)) {
-            String path = (String) SPUtils.getData(Constant.SP_PICTURE_PATH_KEY, "");
-            if (!path.equals("")) {
-                try {
-                    FileInputStream fileInputStream = new FileInputStream(path);
-                    Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
-                    ivBlurPicture.setImageBitmap(bitmap);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-            }
-            ivBlurPicture.setVisibility(View.VISIBLE);
-           // dynamicWeatherView.onResume();
-        } else {
-            ivBlurPicture.setVisibility(View.GONE);
-           // dynamicWeatherView.onPause();
         }
     }
 
@@ -229,36 +186,51 @@ public class MainActivity extends BaseActivity implements WeatherView {
     }
 
     @Subscribe
-    public void blurChange(boolean isChange) {
-        //if (isChange)
-            //initFragmentWeatherPage();
+    public void getImageBgEvent(ImageBackgroundEvent imageBackgroundEvent) {
+        if (imageBackgroundEvent.isImageBg()) {
+            String path = imageBackgroundEvent.getImagePath();
+            if (!path.equals("")) {
+                try {
+                    FileInputStream fileInputStream = new FileInputStream(path);
+                    Bitmap bitmap = BitmapFactory.decodeStream(fileInputStream);
+                    ivBlurPicture.setImageBitmap(bitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            ivBlurPicture.setVisibility(View.VISIBLE);
+            // dynamicWeatherView.onResume();
+        } else {
+            ivBlurPicture.setVisibility(View.GONE);
+            // dynamicWeatherView.onPause();
+        }
     }
 
     @Override
     public void showWeather(Weather weather, boolean isRefresh) {
         setWeatherBackground(weather);
         EventBus.getDefault().post(weather);
-        String cityName = weather.getInfo().getCityName();
-        tvCityName.setText(cityName);
-       // new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 1000);
-
-       // tvCityName.setText(LitePal.find(DefaultCity.class, 1).getCityName());
-        /*List<SavedCity> savedCityList = LitePal.findAll(SavedCity.class);
-        for (SavedCity savedCity : savedCityList) {
-            if (savedCity.getCityName().equals(cityName)) {
-                tvCityName.setText(cityName);
-                break;
-            }
-        }*/
+        tvCityName.setText(weather.getInfo().getCityName());
         if (isRefresh) {
-          //  swipeRefreshLayout.setRefreshing(false);
+            swipeRefreshLayout.setRefreshing(false);
             Snackbar.make(findViewById(R.id.cdl_weather_basic), getString(R.string.refresh_success), Snackbar.LENGTH_LONG).show();
+        } else {
+            new Handler().postDelayed(() -> swipeRefreshLayout.setRefreshing(false), 800);
+        }
+    }
+
+    private void refreshWeather() {
+        if (NetworkUtil.isNetworkConnected()) {
+             new RefreshWeather(isDefaultCity, cityName).setWeatherView(this);
+        } else {
+             Snackbar.make(findViewById(R.id.cdl_weather_basic), getString(R.string.no_network_connection), Snackbar.LENGTH_LONG).show();
+             swipeRefreshLayout.setRefreshing(false);
         }
     }
 
     @Override
     public void showError(String error) {
-       // swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
         Snackbar.make(findViewById(R.id.cdl_weather_basic), error + getString(R.string.load_last_time_msg), Snackbar.LENGTH_LONG).show();
     }
 
@@ -272,18 +244,6 @@ public class MainActivity extends BaseActivity implements WeatherView {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_city:
-                /*Intent intent = new Intent(MainActivity.this, CityActivity.class);
-                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this,
-                        Pair.create(tvCityName,"sharedChallenger")).toBundle());*/
-               // Activity activity = (Activity) getContext();
-               /* ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this,
-                        new Pair(dynamicWeatherView, CityActivity.IMAGE_TRANSITION_NAME)
-                       // new Pair(address1, DetailActivity.ADDRESS1_TRANSITION_NAME)
-                );
-                Intent intent = new Intent(this, CityActivity.class);
-                //intent.putExtra(DetailActivity.EXTRA_IMAGE_URL, imageUrl);
-                ActivityCompat.startActivity(this, intent, options.toBundle());*/
-
                 startActivity(new Intent(MainActivity.this, CityActivity.class));
                 break;
             case R.id.action_settings:
@@ -294,22 +254,6 @@ public class MainActivity extends BaseActivity implements WeatherView {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 0) {
-            initPictureBackground();
-            if ((boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false)) {
-                EventBus.getDefault().postSticky("blurImageChange");
-            }
-            /*if (!(boolean) SPUtils.getData(Constant.SP_USE_BLUR_KEY, false) ||
-                    !(boolean) SPUtils.getData(Constant.SP_USE_PICTURE_BACKGROUND_KEY, false)) {
-                initFragmentWeatherPage();
-                isFirst = true;
-            }*/
-        }
     }
 
     @Override

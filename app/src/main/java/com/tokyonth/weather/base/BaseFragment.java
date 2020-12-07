@@ -8,10 +8,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.tokyonth.weather.model.bean.BlurEvent;
+import com.tokyonth.weather.model.bean.ImageBackgroundEvent;
 import com.tokyonth.weather.model.bean.Weather;
 
 import org.greenrobot.eventbus.EventBus;
@@ -47,6 +50,11 @@ public abstract class BaseFragment extends Fragment {
         setWeather(weather);
     }
 
+    @Subscribe
+    public void getIsBlur(BlurEvent blurEvent) {
+        setBlurConfig(blurEvent);
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -60,5 +68,7 @@ public abstract class BaseFragment extends Fragment {
     protected abstract void initData();
 
     protected abstract void setWeather(Weather weather);
+
+    protected abstract void setBlurConfig(BlurEvent blurEvent);
 
 }
